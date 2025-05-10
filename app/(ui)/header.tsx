@@ -24,7 +24,7 @@ export default function Header() {
           <Profile />
         </div>
       </div>
-      <div className="bg-gradient-to-r from-violet-950 to-blue-900 p-[2px] min-w-screen mt-2" />
+      <div className="bg-gradient-to-r from-violet-950 to-blue-900 p-[2px] w-full mt-2" />
     </header>
   )
 }
