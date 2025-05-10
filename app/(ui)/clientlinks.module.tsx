@@ -13,7 +13,7 @@ export default function ClientLinks({ menuLinks }: { menuLinks: MenuLinks }) {
         <Link
           key={index}
           href={linkData.link}
-          className={`${linkData.className ? linkData.className : ''} ${pathname === linkData.link && 'text-indigo-200'} hover:text-sky-400`}
+          className={`${pathname === linkData.link && 'text-indigo-200'} hover:text-sky-400`}
         >
           {linkData.icon !== null && <FontAwesomeIcon icon={linkData.icon} />}
         </Link>
