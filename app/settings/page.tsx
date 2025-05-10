@@ -1,5 +1,5 @@
 import { signIn } from "@/auth"
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
+import { faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Page() {
@@ -16,10 +16,10 @@ export function SignIn() {
     <form
       action={async () => {
         "use server"
-        await signIn("github")
+        await signIn()
       }}
     >
-      <button type="submit" className="border-white border-2 p-2 rounded-xl mt-4"><FontAwesomeIcon icon={faGithub}/> Sign in with GitHub</button>
+      <button type="submit" className="border-white border-2 p-2 rounded-xl mt-4"><FontAwesomeIcon icon={faSignIn}/> Sign in</button>
     </form>
   )
 } 
