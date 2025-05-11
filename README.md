@@ -1,3 +1,5 @@
+<img src="public/logo.webp" height=125>
+
 # Visiorganize
 The ultimate organization tool for software developers! Also, this is Aelithron's project for Hack Club's [Neighborhood](https://neighborhood.hackclub.com).
 
