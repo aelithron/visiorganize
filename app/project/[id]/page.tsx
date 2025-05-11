@@ -1,7 +1,8 @@
-export default function Page() {
+export default async function Page({ params }: { params: { id: string } }) {
+  const id = (await params).id
   return (
-    <div>
-      <p>hi</p>
+    <div className="flex flex-col items-center justify-center p-6 md:p-16">
+      <h1 className="text-3xl font-semibold">Project {id}</h1>
     </div>
   )
 }
