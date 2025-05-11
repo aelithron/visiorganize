@@ -27,7 +27,7 @@ export default async function Header() {
           <Profile session={session} />
         </div>
       </div>
-      <div className="bg-gradient-to-r from-violet-950 to-blue-900 p-[2px] w-full mt-2" />
+      <div className="bg-gradient-to-r dark:from-violet-950 dark:to-blue-900 from-violet-400 to-blue-400 p-[2px] w-full mt-2" />
     </header>
   )
 }

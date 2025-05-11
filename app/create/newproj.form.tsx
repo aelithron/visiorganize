@@ -13,15 +13,15 @@ export default function NewProject() {
       alert("Please enter a project name.");
       return;
     }
-    fetch("/api/create", { method: "POST", body: JSON.stringify({ name: projectName }) })
+    fetch("/api/project/create", { method: "POST", body: JSON.stringify({ name: projectName }) })
       .then((res) => {
         return res.json();
       })
       .then((data) => {
-        if (data.success) {
+        if (!data.error) {
           router.push(`/project/${data.id}`);
         } else {
-          alert("Error creating project: " + data.message);
+          alert("Error creating project: " + data.message + " (" + data.error + ")");
         }
       })
   }

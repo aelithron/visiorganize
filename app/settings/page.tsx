@@ -21,7 +21,7 @@ export async function SignInOrOut() {
           await signIn()
         }}
       >
-        <button type="submit" className="border-white border-2 p-2 rounded-xl mt-4"><FontAwesomeIcon icon={faSignIn} /> Sign In</button>
+        <button type="submit" className="border-black dark:border-white border-2 p-2 rounded-xl mt-4"><FontAwesomeIcon icon={faSignIn} /> Sign In</button>
       </form>
     )
   } else {
@@ -32,7 +32,7 @@ export async function SignInOrOut() {
           await signOut()
         }}
       >
-        <button type="submit" className="border-white border-2 p-2 rounded-xl mt-4"><FontAwesomeIcon icon={faSignOut} /> Sign Out</button>
+        <button type="submit" className="border-black dark:border-white border-2 p-2 rounded-xl mt-4"><FontAwesomeIcon icon={faSignOut} /> Sign Out</button>
       </form>
     )
   }
