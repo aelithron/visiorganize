@@ -46,3 +46,13 @@ export type Resource = {
   type: string;
   data: unknown;
 }
+
+export async function getProject(projectID: string): Promise<Project | null> {
+  let _id;
+  try {
+    _id = new ObjectId(projectID);
+  } catch {
+    return null;
+  }
+  return await client.db(process.env.MONGODB_DB).collection<Project>("projects").findOne({ _id });
+}

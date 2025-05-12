@@ -11,7 +11,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
   const projectID = new ObjectId();
 
   const body = await req.json();
-  if (body.name === undefined || body.name === null || body.name.trim().length <= 0) return NextResponse.json({ error: "INVALID_NAME", message: "Project name is invalid" }, { status: 400 });
+  if (body.name === undefined || body.name === null || body.name.trim().length <= 0) return NextResponse.json({ error: "INVALID_NAME", message: "Project name is missing/invalid" }, { status: 400 });
 
   await client.db(process.env.MONGODB_DB).collection("projects").insertOne({
     _id: projectID,

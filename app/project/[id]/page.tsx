@@ -1,23 +1,14 @@
 import { auth } from "@/auth";
-import client, { Folder, Project, Resource } from "@/utils/db"
+import { Folder, getProject, Resource } from "@/utils/db"
 import FormattedDate from "@/utils/time.module";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ObjectId } from "mongodb";
 import Link from "next/link";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await auth();
   const id = (await params).id
-
-  let _id;
-  try {
-    _id = new ObjectId(id);
-  } catch {
-    return <NotFoundProject id={id} />
-  }
-
-  const project = await client.db(process.env.MONGODB_DB).collection<Project>("projects").findOne({ _id });
+  const project = await getProject(id);
   if (session === null || session.user === null || session.user === undefined) return <p className="flex flex-col items-center justify-center p-6 md:p-16 space-y-2">Unauthorized, try logging in!</p>
   if (project === null || project.user !== session.user.email) return <NotFoundProject id={id} />
 
