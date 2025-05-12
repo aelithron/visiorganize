@@ -28,47 +28,21 @@ if (process.env.NODE_ENV === "development") {
 }
 export default client;
 
-export async function createProject(userID: string, projectName: string, projectID: ObjectId) {
-  return await client.db(process.env.MONGODB_DB).collection("projects").insertOne({
-    _id: projectID,
-    user: userID,
-    name: projectName,
-    createdAt: new Date(),
-    folders: [],
-    resources: [],
-  });
-}
-
-export async function getProject(projectID: string): Promise<Project | null> {
-  return client.db(process.env.MONGODB_DB).collection<Project>("projects").findOne({
-    _id: new ObjectId(projectID),
-  });
-}
-
-export async function getUserProjects(userID: string): Promise<Project[]> {
-  return client.db(process.env.MONGODB_DB).collection<Project>("projects").find({
-    user: userID,
-  }).toArray();
-}
-
 export type Project = {
   _id: ObjectId;
   user: string;
   name: string;
-  createdAt: Date;
+  editedAt: Date;
   folders: Folder[];
   resources: Resource[];
 };
 export type Folder = {
-  _id: ObjectId;
   name: string;
-  createdAt: Date;
   resources: Resource[];
 }
 export type Resource = {
-  _id: ObjectId;
   name: string;
-  createdAt: Date;
+  editedAt: Date;
   type: string;
   data: unknown;
 }
