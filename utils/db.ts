@@ -37,10 +37,12 @@ export type Project = {
   resources: Resource[];
 };
 export type Folder = {
+  _id: ObjectId;
   name: string;
   resources: Resource[];
 }
 export type Resource = {
+  _id: ObjectId;
   name: string;
   editedAt: Date;
   type: string;

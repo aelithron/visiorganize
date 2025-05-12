@@ -18,7 +18,8 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
   const projectID = new ObjectId(body.projectID as string);
 
   const folders: Folder[] = fullProject.folders;
-  folders.push({ name: body.name, resources: [] });
+  const folderID = new ObjectId()
+  folders.push({ _id: folderID, name: body.name, resources: [] });
 
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
@@ -29,5 +30,5 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
       },
     },
   );
-  return NextResponse.json({ message: "Folder created successfully" }, { status: 201 });
+  return NextResponse.json({ message: "Folder created successfully", id: folderID }, { status: 201 });
 });
