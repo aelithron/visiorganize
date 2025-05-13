@@ -5,6 +5,7 @@ import FormattedDate from "@/utils/time.module";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { ProjectTools } from "./tools.form";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await auth();
@@ -15,11 +16,12 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex flex-col items-center justify-center p-6 md:p-16">
+      <ProjectTools project={project} />
       <h1 className="text-3xl font-semibold">{project.name}</h1>
       <FormattedDate date={project.editedAt} />
       <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(project.folders.length + project.resources.length)}`}>
-        {((project.folders.length === 0) && (project.resources.length === 0)) && <p className="text-slate-500">Project is empty!</p>}
-        {project.folders.map((folder, index) => <FolderDisplay key={index} folder={folder} />)}
+        {((project.folders.length === 0) && (project.resources.length === 0)) && <p className="text-slate-500 font-semibold text-lg">Project is empty!</p>}
+        {project.folders.map((folder, index) => <FolderDisplay key={index} folder={folder} projectid={id} />)}
         {project.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} />)}
       </div>
     </div>
@@ -39,7 +41,7 @@ function NotFoundProject({ id }: { id: string }) {
 
 function formatCols(projectCount: number): string {
   switch (projectCount) {
-    case (1):
+    case (0 || 1):
       return "md:grid-cols-1"
     case (2):
       return "md:grid-cols-2"
