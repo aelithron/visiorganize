@@ -13,7 +13,7 @@ export default function NewProject() {
       alert("Please enter a project name.");
       return;
     }
-    fetch("/api/project/create", { method: "POST", body: JSON.stringify({ name: projectName }) })
+    fetch("/api/project", { method: "POST", body: JSON.stringify({ name: projectName }) })
       .then((res) => {
         return res.json();
       })
