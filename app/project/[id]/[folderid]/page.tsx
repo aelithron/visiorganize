@@ -6,12 +6,14 @@ import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: { id: string, folderid: string } }) {
   const session = await auth();
-  const id = (await params).id
+  const id = (await params).id;
+  const folderid = (await params).folderid;
   const project = await getProject(id);
   if (session === null || session.user === null || session.user === undefined) return <p className="flex flex-col items-center justify-center p-6 md:p-16 space-y-2">Unauthorized, try logging in!</p>
   if (project === null || project.user !== session.user.email) return <NotFoundProject id={id} />
+  const folder = project.folders.find((folder) => folder._id.toString() === folderid);
 
   return (
     <div className="flex flex-col items-center justify-center p-6 md:p-16">
