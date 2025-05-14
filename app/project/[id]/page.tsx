@@ -5,7 +5,7 @@ import FormattedDate from "@/utils/time.module";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
-import { ProjectTools } from "./tools.form";
+import { ProjectTools } from "./projecttools.module";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const session = await auth();
@@ -16,7 +16,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <div className="flex flex-col items-center justify-center p-6 md:p-16">
-      <ProjectTools project={project} />
+      <ProjectTools projectID={id} />
       <h1 className="text-3xl font-semibold">{project.name}</h1>
       <FormattedDate date={project.editedAt} />
       <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(project.folders.length + project.resources.length)}`}>

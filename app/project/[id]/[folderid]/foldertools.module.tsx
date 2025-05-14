@@ -1,34 +1,10 @@
 "use client"
-import { Folder, Project } from "@/utils/db";
-
-export function ProjectTools({ project }: { project: Project }) {
+export function FolderTools({ folderID, projectID }: { folderID: string, projectID: string }) {
   return (
     <div>
 
     </div>
   )
-}
-
-export function FolderTools({ folder, projectID }: { folder: Folder, projectID: string }) {
-  return (
-    <div>
-
-    </div>
-  )
-}
-
-function deleteProject(projectID: string) {
-  fetch(`/api/project`, {
-    method: "DELETE",
-    body: JSON.stringify({ projectID: projectID.toString() }),
-  })
-  .then((res) => {
-    if (res.ok) {
-      alert("Project deleted successfully");
-    } else {
-      alert("Failed to delete project");
-    }
-  });
 }
 
 function createFolder(projectID: string, folderName: string) {
