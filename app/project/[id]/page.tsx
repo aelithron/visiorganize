@@ -11,18 +11,20 @@ export default async function Page({ params }: { params: { id: string } }) {
   const session = await auth();
   const id = (await params).id
   const project = await getProject(id);
-  if (session === null || session.user === null || session.user === undefined) return <p className="flex flex-col items-center justify-center p-6 md:p-16 space-y-2">Unauthorized, try logging in!</p>
+  if (session === null || session.user === null || session.user === undefined) return <p className="flex flex-col items-center justify-center p-6 md:px-16 space-y-2">Unauthorized, try logging in!</p>
   if (project === null || project.user !== session.user.email) return <NotFoundProject id={id} />
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 md:p-16">
+    <div>
       <ProjectTools projectID={id} />
-      <h1 className="text-3xl font-semibold">{project.name}</h1>
-      <FormattedDate date={project.editedAt} />
-      <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(project.folders.length + project.resources.length)}`}>
-        {((project.folders.length === 0) && (project.resources.length === 0)) && <p className="text-slate-500 font-semibold text-lg">Project is empty!</p>}
-        {project.folders.map((folder, index) => <FolderDisplay key={index} folder={folder} projectid={id} />)}
-        {project.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} />)}
+      <div className="flex flex-col items-center justify-center p-6 md:px-16">
+        <h1 className="text-3xl font-semibold">{project.name}</h1>
+        <FormattedDate date={project.editedAt} />
+        <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(project.folders.length + project.resources.length)}`}>
+          {((project.folders.length === 0) && (project.resources.length === 0)) && <p className="text-slate-500 font-semibold text-lg">Project is empty!</p>}
+          {project.folders.map((folder, index) => <FolderDisplay key={index} folder={folder} projectid={id} />)}
+          {project.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} />)}
+        </div>
       </div>
     </div>
   )
@@ -30,7 +32,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
 function NotFoundProject({ id }: { id: string }) {
   return (
-    <div className="flex flex-col items-center justify-center p-6 md:p-16 space-y-2">
+    <div className="flex flex-col items-center justify-center p-6 md:px-16 space-y-2">
       <h1 className="text-3xl font-semibold">Project not found!</h1>
       <p>The project you are looking for could not be found.</p>
       <Link href={"/"} className="hover:text-sky-500 bg-blue-500 p-2 rounded-xl"><FontAwesomeIcon icon={faHome} /> Go Home</Link>
