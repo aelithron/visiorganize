@@ -21,17 +21,16 @@ export function ProjectTools({ projectID }: { projectID: string }) {
 
 function DeleteProject({ projectID, closeMenu }: { projectID: string, closeMenu: () => void }) {
   const router = useRouter();
-  function onClick(projectID: string) {
+  function onClick(id: string) {
     fetch(`/api/project`, {
       method: "DELETE",
-      body: JSON.stringify({ projectID: projectID.toString() }),
+      body: JSON.stringify({ id }),
     })
       .then((res) => {
         return res.json();
       })
       .then((res) => {
-        if (res.ok) {
-          alert("Project deleted successfully!");
+        if (!res.error) {
           router.push("/");
         } else {
           alert(`Failed to delete project: ${res.status}`);
@@ -48,11 +47,11 @@ function DeleteProject({ projectID, closeMenu }: { projectID: string, closeMenu:
 }
 
 function CreateFolder({ projectID }: { projectID: string }) {
-  const [folderName, setFolderName] = useState("");
-  function onClick(projectID: string, folderName: string) {
+  const [name, setName] = useState("");
+  function onClick(projectID: string, name: string) {
   fetch(`/api/folder`, {
     method: "POST",
-    body: JSON.stringify({ projectID: projectID.toString, folderName }),
+    body: JSON.stringify({ projectID, name }),
   })
     .then((res) => {
       if (res.ok) {
@@ -64,8 +63,8 @@ function CreateFolder({ projectID }: { projectID: string }) {
   }
   return (
     <div className="flex flex-col gap-4 bg-slate-200 dark:bg-slate-800 p-4 rounded-lg my-2">
-      <input type="text" placeholder="Folder Name" value={folderName} onChange={(e) => setFolderName(e.target.value)} className="p-1 border-2 border-slate-100 dark:border-slate-900 rounded-md" />
-      <button onClick={() => onClick(projectID, folderName)}><FontAwesomeIcon icon={faFolderPlus} /> Create Folder</button>
+      <input type="text" placeholder="Folder Name" value={name} onChange={(e) => setName(e.target.value)} className="p-1 border-2 border-slate-100 dark:border-slate-900 rounded-md" />
+      <button onClick={() => onClick(projectID, name)}><FontAwesomeIcon icon={faFolderPlus} /> Create Folder</button>
     </div>
   )
 }
