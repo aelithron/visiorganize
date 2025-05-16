@@ -75,10 +75,10 @@ function CreateFolder({ projectID }: { projectID: string }) {
 
 function DeleteProject({ projectID, closeMenu }: { projectID: string, closeMenu: () => void }) {
   const router = useRouter();
-  function onClick(id: string) {
+  function onClick(projectID: string) {
     fetch(`/api/project`, {
       method: "DELETE",
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({ projectID }),
     })
       .then((res) => {
         return res.json();

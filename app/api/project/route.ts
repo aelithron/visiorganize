@@ -30,13 +30,13 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
   if (user.email === null || user.email === undefined) return NextResponse.json({ error: "INVALID_USER_PROFILE", message: "User has no email address." }, { status: 400 });
 
   const body = await req.json();
-  if (body.id === undefined || body.id === null || body.id.trim().length <= 0) return NextResponse.json({ error: "INVALID_ID", message: "Project ID is missing/invalid." }, { status: 400 });
-  const projectID = new ObjectId(body.id as string);
+  if (body.projectID === undefined || body.projectID === null || body.projectID.trim().length <= 0) return NextResponse.json({ error: "INVALID_ID", message: "Project ID is missing/invalid." }, { status: 400 });
+  const projectID = new ObjectId(body.projectID as string);
 
   const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
   if (project === null) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project was not found." }, { status: 404 });
   if (project.user !== user.email) return NextResponse.json({ error: "FORBIDDEN", message: "You do not have permission to delete this project!" }, { status: 403 });
   
   await client.db(process.env.MONGODB_DB).collection("projects").deleteOne({ _id: projectID });
-  return NextResponse.json({ message: "Project deleted successfully." }, { status: 201 });
+  return NextResponse.json({ message: "Project deleted successfully." }, { status: 200 });
 });

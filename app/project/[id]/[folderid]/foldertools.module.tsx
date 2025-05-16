@@ -25,17 +25,17 @@ export function FolderTools({ folderID, projectID }: { folderID: string, project
 
 function DeleteFolder({ projectID, folderID, closeMenu }: { projectID: string, folderID: string, closeMenu: () => void }) {
   const router = useRouter();
-  function onClick(id: string, folderID: string) {
+  function onClick(projectID: string, folderID: string) {
     fetch(`/api/folder`, {
       method: "DELETE",
-      body: JSON.stringify({ projectID: id, folderID: folderID }),
+      body: JSON.stringify({ projectID, folderID }),
     })
       .then((res) => {
         return res.json();
       })
       .then((res) => {
         if (!res.error) {
-          router.push(`/project/${id}`);
+          router.push(`/project/${projectID}`);
         } else {
           alert("Failed to delete folder");
         }
