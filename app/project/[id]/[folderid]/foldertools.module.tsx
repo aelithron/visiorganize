@@ -44,8 +44,8 @@ function DeleteFolder({ projectID, folderID, closeMenu }: { projectID: string, f
   return (
     <div className="flex flex-col gap-4 bg-slate-200 dark:bg-slate-800 p-4 rounded-lg my-2">
       <p className="text-red-500">Are you sure you want to delete this folder?</p>
-      <button onClick={() => onClick(projectID, folderID)} className="bg-red-500 p-2 rounded-lg hover:text-sky-500"><FontAwesomeIcon icon={faFolderMinus} /> Delete Folder</button>
-      <button onClick={() => closeMenu()} className="hover:text-sky-500 bg-slate-300 dark:bg-slate-700 p-2 text-center rounded-xl">Cancel</button>
+      <button onClick={() => onClick(projectID, folderID)} className="bg-red-500 p-2 rounded-xl border-2 border-slate-400 dark:border-slate-900 hover:text-sky-500"><FontAwesomeIcon icon={faFolderMinus} /> Delete Folder</button>
+      <button onClick={() => closeMenu()} className="hover:text-sky-500 bg-slate-300 dark:bg-slate-700 p-2 text-center rounded-xl border-2 border-slate-400 dark:border-slate-900">Cancel</button>
     </div>
   )
 }
