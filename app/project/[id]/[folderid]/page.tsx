@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { getProject } from "@/utils/db"
 import { ResourceDisplay } from "@/utils/displays.module";
 import FormattedDate from "@/utils/time.module";
-import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { faFolder, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { FolderTools } from "./foldertools.module";
@@ -18,13 +18,16 @@ export default async function Page({ params }: { params: { id: string, folderid:
   if (folder === undefined) return <NotFoundFolder id={id} folderid={folderid} />
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 md:px-16">
+    <div>
       <FolderTools folderID={folderid} projectID={id} />
-      <h1 className="text-3xl font-semibold">{project.name}</h1>
-      <FormattedDate date={project.editedAt} />
-      <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(project.folders.length + project.resources.length)}`}>
-        {(folder.resources.length === 0) && <p className="text-slate-500 font-semibold text-lg">Folder is empty!</p>}
-        {folder.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} />)}
+      <div className="flex flex-col items-center justify-center p-6 md:px-16 md:py-8">
+        <h1 className="text-3xl font-semibold"><FontAwesomeIcon icon={faFolder} /> {folder.name}</h1>
+        <h1 className="text-xl text-slate-800 dark:text-slate-200">in {project.name}</h1>
+        <FormattedDate date={project.editedAt} />
+        <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(folder.resources.length)}`}>
+          {(folder.resources.length === 0) && <p className="text-slate-500 font-semibold text-lg">Folder is empty!</p>}
+          {folder.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} />)}
+        </div>
       </div>
     </div>
   )
