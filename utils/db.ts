@@ -46,7 +46,7 @@ export type Resource = {
   name: string;
   editedAt: Date;
   type: string;
-  data: unknown;
+  body: unknown;
 }
 
 export async function getProject(projectID: string): Promise<Project | null> {

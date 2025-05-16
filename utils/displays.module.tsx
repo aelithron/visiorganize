@@ -19,7 +19,7 @@ export function ResourceDisplay({ resource }: { resource: Resource }) {
     <div className="flex flex-col justify-center items-center">
       <p>{resource.name} <p className="text-slate-500">({resource.type})</p></p>
       <FormattedDate date={resource.editedAt} />
-      {resource.data as string} {/* This is a temporary method, parse better later :3 */}
+      {resource.body as string} {/* This is a temporary method, parse better later :3 */}
     </div>
   )
 }
