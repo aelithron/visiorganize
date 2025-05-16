@@ -4,6 +4,7 @@ import FormattedDate from "@/utils/time.module";
 import { faFolder, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import { FolderSettings } from "./settings.module";
 
 export default async function Page({ params }: { params: { id: string, folderid: string } }) {
   const session = await auth();
@@ -20,6 +21,7 @@ export default async function Page({ params }: { params: { id: string, folderid:
       <h1 className="text-3xl font-semibold"><FontAwesomeIcon icon={faFolder} /> {folder.name}</h1>
       <h1 className="text-xl text-slate-800 dark:text-slate-200">in {project.name}</h1>
       <FormattedDate date={project.editedAt} />
+      <FolderSettings projectID={id} folderID={folderid} folderName={folder.name} />
     </div>
   )
 }
