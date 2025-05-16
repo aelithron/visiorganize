@@ -33,7 +33,7 @@ function DeleteProject({ projectID, closeMenu }: { projectID: string, closeMenu:
       })
       .then((res) => {
         if (!res.error) {
-          router.push(`/project/${projectID}`);
+          router.push(`/`);
         } else {
           alert("Failed to delete project");
         }

@@ -1,11 +1,23 @@
 import { auth, signIn, signOut } from "@/auth"
 import { faSignIn, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 
-export default function Page() {
+export default async function Page() {
+  const session = await auth();
   return (
     <div className="flex flex-col items-center justify-center p-6 md:p-16">
       <h1 className="text-3xl font-semibold">Settings</h1>
+      {session?.user && <div className="flex gap-2 bg-slate-300 dark:bg-slate-700 p-4 rounded-lg my-2 items-center">
+        {session.user.image ?
+          <Image src={session.user.image} alt="The user's profile picture." width={60} height={60} className="rounded-full" /> :
+          <div className="w-15 h-15 bg-violet-300 rounded-full" />
+        }
+        <div>
+          <p className="text-lg font-semibold">{session.user.name}</p>
+          <p className="text-md text-slate-700 dark:text-slate-300">{session.user.email}</p>
+        </div>
+      </div>}
       <SignInOrOut />
     </div>
   );
