@@ -24,10 +24,11 @@ export function ProjectTools({ projectID }: { projectID: string }) {
 
 export function CreateResource({ projectID, folderID }: { projectID: string, folderID?: string }) {
   const [name, setName] = useState("");
-  function onClick(projectID: string, name: string, folderID?: string) {
+  const [body, setBody] = useState("");
+  function onClick(projectID: string, name: string, body: string, folderID?: string) {
     fetch(`/api/resource`, {
       method: "POST",
-      body: JSON.stringify({ projectID, folderID, name }),
+      body: JSON.stringify({ projectID, folderID, name, type: "text", body }),
     })
       .then((res) => {
         if (res.ok) {
@@ -40,8 +41,9 @@ export function CreateResource({ projectID, folderID }: { projectID: string, fol
   return (
     <div className="flex flex-col gap-4 bg-slate-200 dark:bg-slate-800 p-4 rounded-lg my-2">
       <input type="text" placeholder="Resource Name" value={name} onChange={(e) => setName(e.target.value)} className="p-1 bg-slate-300 dark:bg-slate-700 border-2 border-slate-400 dark:border-slate-900 rounded-lg" />
+      <textarea placeholder="Contents" value={body} onChange={(e) => setBody(e.target.value)} className="p-1 bg-slate-300 dark:bg-slate-700 border-2 border-slate-400 dark:border-slate-900 rounded-lg" />
       <div className="grid grid-cols-4 gap-2">
-        <button onClick={() => onClick(projectID, name, folderID)} className="hover:text-sky-500 bg-slate-300 dark:bg-slate-700 p-2 text-center rounded-xl border-2 border-slate-400 dark:border-slate-900 col-span-3"><FontAwesomeIcon icon={faFileCirclePlus} /> Create Resource</button>
+        <button onClick={() => onClick(projectID, name, body, folderID)} className="hover:text-sky-500 bg-slate-300 dark:bg-slate-700 p-2 text-center rounded-xl border-2 border-slate-400 dark:border-slate-900 col-span-3"><FontAwesomeIcon icon={faFileCirclePlus} /> Create Resource</button>
         <Link href={`/project/${projectID}${folderID ? `/${folderID}` : ""}/new`} className="hover:text-sky-500 bg-slate-300 dark:bg-slate-700 p-2 text-center rounded-xl border-2 border-slate-400 dark:border-slate-900"><FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} /></Link>
       </div>
     </div>
