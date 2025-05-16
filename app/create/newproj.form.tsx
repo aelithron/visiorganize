@@ -32,7 +32,7 @@ export default function NewProject() {
         value={projectName}
         onChange={(e) => setProjectName(e.target.value)}
         placeholder="Project Name"
-        className="mb-4 p-2 border border-gray-300 rounded-lg"
+        className="mb-4 flex flex-col justify-center p-2 bg-slate-200 dark:bg-slate-800 rounded-lg"
       />
       <button
         type="submit"

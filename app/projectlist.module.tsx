@@ -24,7 +24,7 @@ export default async function ProjectList() {
   return (
     <div className={`grid grid-cols-1 ${formatColsForProjects(projects.length)} gap-4 w-max mt-5`}>
       {projects.map((project) => (
-        <div className="flex flex-col border-slate-700 border-2 p-3 rounded-lg" key={project._id.toString()}>
+        <div className="flex flex-col justify-center p-3 bg-slate-200 dark:bg-slate-800 rounded-lg" key={project._id.toString()}>
           <Link href={`/project/${project._id}`} className="text-xl font-semibold hover:text-sky-500">{project.name}</Link>
           <FormattedDate date={project.editedAt} />
         </div>
