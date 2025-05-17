@@ -1,10 +1,11 @@
 import { auth } from "@/auth";
 import { getProject } from "@/utils/db"
 import FormattedDate from "@/utils/time.module";
-import { faArrowLeft, faFolder, faHome } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faFolder } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { FolderSettings } from "./settings.module";
+import { NotFoundFolder } from "../page";
 
 export default async function Page({ params }: { params: { id: string, folderid: string } }) {
   const session = await auth();
@@ -25,18 +26,6 @@ export default async function Page({ params }: { params: { id: string, folderid:
         <FormattedDate date={project.editedAt} />
         <FolderSettings projectID={id} folderID={folderid} folderName={folder.name} />
       </div>
-    </div>
-  )
-}
-
-function NotFoundFolder({ id, folderid }: { id: string, folderid: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center p-6 md:px-16 space-y-2">
-      <h1 className="text-3xl font-semibold">Folder not found!</h1>
-      <p>The folder you are looking for could not be found.</p>
-      <Link href={"/"} className="hover:text-sky-500 bg-blue-500 p-2 rounded-xl"><FontAwesomeIcon icon={faHome} /> Go Home</Link>
-      <p className="text-sm text-slate-500 mt-6">Project ID: {id}</p>
-      <p className="text-sm text-slate-500">Folder ID: {folderid}</p>
     </div>
   )
 }

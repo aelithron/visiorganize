@@ -1,5 +1,5 @@
 "use client"
-import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPencil, faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -69,7 +69,10 @@ function EditSettingsForm({ projectID, projectName }: { projectID: string, proje
   }
   return (
     <div className="flex flex-col gap-4 bg-slate-200 dark:bg-slate-800 p-4 rounded-lg my-2">
-      <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Project Name" className="bg-slate-300 dark:bg-slate-700 p-2 rounded-xl border-2 border-slate-400 dark:border-slate-900" />
+      <div className="flex space-x-2 items-center">
+        <FontAwesomeIcon icon={faPencil} />
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Project Name" className="bg-slate-300 dark:bg-slate-700 p-2 rounded-xl border-2 border-slate-400 dark:border-slate-900" />
+      </div>
       <button onClick={() => onClick()} className="bg-slate-300 dark:bg-slate-700 p-2 rounded-xl border-2 border-slate-400 dark:border-slate-900 hover:text-sky-500"><FontAwesomeIcon icon={faPenToSquare} /> Update Project</button>
     </div>
   )

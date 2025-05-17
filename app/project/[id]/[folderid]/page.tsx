@@ -33,7 +33,7 @@ export default async function Page({ params }: { params: { id: string, folderid:
   )
 }
 
-function NotFoundFolder({ id, folderid }: { id: string, folderid: string }) {
+export function NotFoundFolder({ id, folderid }: { id: string, folderid: string }) {
   return (
     <div className="flex flex-col items-center justify-center p-6 md:px-16 space-y-2">
       <h1 className="text-3xl font-semibold">Folder not found!</h1>

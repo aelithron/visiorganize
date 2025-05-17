@@ -30,7 +30,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   )
 }
 
-function NotFoundProject({ id }: { id: string }) {
+export function NotFoundProject({ id }: { id: string }) {
   return (
     <div className="flex flex-col items-center justify-center p-6 md:px-16 space-y-2">
       <h1 className="text-3xl font-semibold">Project not found!</h1>

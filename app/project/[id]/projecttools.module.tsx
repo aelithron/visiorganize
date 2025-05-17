@@ -3,6 +3,7 @@ import { faFileCirclePlus, faFolderPlus, faGear, faUpRightAndDownLeftFromCenter 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function ProjectTools({ projectID }: { projectID: string }) {
   type PossibleMenus = "createfolder" | "createresource" | null;
@@ -21,6 +22,7 @@ export function ProjectTools({ projectID }: { projectID: string }) {
 }
 
 export function CreateResource({ projectID, folderID }: { projectID: string, folderID?: string }) {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [body, setBody] = useState("");
   function onClick(projectID: string, name: string, body: string, folderID?: string) {
@@ -30,7 +32,7 @@ export function CreateResource({ projectID, folderID }: { projectID: string, fol
     })
       .then((res) => {
         if (res.ok) {
-          alert("Resource created successfully!");
+          router.refresh();
         } else {
           alert("Failed to create resource.");
         }
@@ -49,6 +51,7 @@ export function CreateResource({ projectID, folderID }: { projectID: string, fol
 }
 
 function CreateFolder({ projectID }: { projectID: string }) {
+  const router = useRouter();
   const [name, setName] = useState("");
   function onClick(projectID: string, name: string) {
     fetch(`/api/folder`, {
@@ -57,7 +60,7 @@ function CreateFolder({ projectID }: { projectID: string }) {
     })
       .then((res) => {
         if (res.ok) {
-          alert("Folder created successfully!");
+          router.refresh();
         } else {
           alert("Failed to create folder.");
         }
