@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { getProject } from "@/utils/db"
 import FormattedDate from "@/utils/time.module";
-import { faFolder, faHome } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faFolder, faHome } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { FolderSettings } from "./settings.module";
@@ -17,11 +17,14 @@ export default async function Page({ params }: { params: { id: string, folderid:
   if (folder === undefined) return <NotFoundFolder id={id} folderid={folderid} />
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 md:px-16 md:py-8">
-      <h1 className="text-3xl font-semibold"><FontAwesomeIcon icon={faFolder} /> {folder.name}</h1>
-      <h1 className="text-xl text-slate-800 dark:text-slate-200">in {project.name}</h1>
-      <FormattedDate date={project.editedAt} />
-      <FolderSettings projectID={id} folderID={folderid} folderName={folder.name} />
+    <div>
+      <Link href={`/project/${id}/${folderid}`} className="inline-flex mt-6 ml-6 p-2 rounded-full hover:text-sky-500 bg-slate-300 dark:bg-slate-700"><FontAwesomeIcon icon={faArrowLeft} /></Link>
+      <div className="flex flex-col items-center justify-center p-6 md:px-16 md:py-8">
+        <h1 className="text-3xl font-semibold"><FontAwesomeIcon icon={faFolder} /> {folder.name}</h1>
+        <h1 className="text-xl text-slate-800 dark:text-slate-200">in {project.name}</h1>
+        <FormattedDate date={project.editedAt} />
+        <FolderSettings projectID={id} folderID={folderid} folderName={folder.name} />
+      </div>
     </div>
   )
 }
