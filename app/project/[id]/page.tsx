@@ -20,10 +20,12 @@ export default async function Page({ params }: { params: { id: string } }) {
       <div className="flex flex-col items-center justify-center p-6 md:px-16">
         <h1 className="text-3xl font-semibold">{project.name}</h1>
         <FormattedDate date={project.editedAt} />
-        <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(project.folders.length + project.resources.length)}`}>
-          {((project.folders.length === 0) && (project.resources.length === 0)) && <p className="text-slate-500 font-semibold text-lg">Project is empty!</p>}
+        {((project.folders.length === 0) && (project.resources.length === 0)) && <p className="text-slate-500 font-semibold text-lg">Project is empty!</p>}
+        <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(project.folders.length)}`}>
           {project.folders.map((folder, index) => <FolderDisplay key={index} folder={folder} projectid={id} />)}
-          {project.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} />)}
+        </div>
+        <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(project.resources.length)}`}>
+          {project.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} projectID={id} />)}
         </div>
       </div>
     </div>
@@ -41,8 +43,8 @@ export function NotFoundProject({ id }: { id: string }) {
   )
 }
 
-function formatCols(projectCount: number): string {
-  switch (projectCount) {
+function formatCols(itemCount: number): string {
+  switch (itemCount) {
     case (0):
       return "md:grid-cols-1"
     case (1):

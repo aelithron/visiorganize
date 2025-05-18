@@ -26,7 +26,7 @@ export default async function Page({ params }: { params: { id: string, folderid:
         <FormattedDate date={project.editedAt} />
         <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(folder.resources.length)}`}>
           {(folder.resources.length === 0) && <p className="text-slate-500 font-semibold text-lg">Folder is empty!</p>}
-          {folder.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} />)}
+          {folder.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} projectID={id} folderID={folder._id.toString()} />)}
         </div>
       </div>
     </div>

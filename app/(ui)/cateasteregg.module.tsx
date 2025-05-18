@@ -30,7 +30,7 @@ export default function CatEasterEgg() {
     setTimeout(() => {
       setIsBlinking(false);
     }, 600);
-    const messages = ["meow", "mrow", "mrrp"];
+    const messages = ["meow", "mrow", "mrrp", "nya"];
     setShownMessage(messages[Math.floor(Math.random() * messages.length)]);
     setTimeout(() => {
       setShownMessage("");
