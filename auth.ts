@@ -27,7 +27,16 @@ function providers() {
     }));
   }
   if (process.env.AUTH_SLACK_ID && process.env.AUTH_SLACK_SECRET) {
-    providers.push(Slack);
+    providers.push(Slack({
+      profile(profile) {
+        return {
+          id: profile["https://slack.com/user_id"],
+          name: profile.name,
+          email: profile.email,
+          image: profile["https://slack.com/user_image_512"],
+        }
+      }
+    }));
   }
   return providers;
 }
