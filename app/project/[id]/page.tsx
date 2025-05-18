@@ -43,7 +43,9 @@ export function NotFoundProject({ id }: { id: string }) {
 
 function formatCols(projectCount: number): string {
   switch (projectCount) {
-    case (0 || 1):
+    case (0):
+      return "md:grid-cols-1"
+    case (1):
       return "md:grid-cols-1"
     case (2):
       return "md:grid-cols-2"

@@ -47,7 +47,9 @@ export function NotFoundFolder({ id, folderid }: { id: string, folderid: string 
 
 function formatCols(projectCount: number): string {
   switch (projectCount) {
-    case (0 || 1):
+    case (0):
+      return "md:grid-cols-1"
+    case (1):
       return "md:grid-cols-1"
     case (2):
       return "md:grid-cols-2"

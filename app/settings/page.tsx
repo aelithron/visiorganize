@@ -19,6 +19,10 @@ export default async function Page() {
         </div>
       </div>}
       <SignInOrOut />
+      <div className="flex gap-1 text-slate-500 dark:text-slate-400 mt-4">
+        <a href="https://github.com/aelithron/visiorganize" className="hover:text-sky-500 underline">Visiorganize</a>
+        <p>{process.env.IMAGE_TAG || "No Version Available"} by Aelithron</p>
+      </div>
     </div>
   );
 }
@@ -48,4 +52,4 @@ export async function SignInOrOut() {
       </form>
     )
   }
-} 
+}
