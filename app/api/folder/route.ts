@@ -4,6 +4,9 @@ import { NextAuthRequest } from "next-auth";
 import client, { Folder, getProject } from "@/utils/db";
 import { ObjectId } from "mongodb";
 
+export const dynamic = 'force-dynamic';
+
+
 export const POST = auth(async function POST(req: NextAuthRequest) {
   if (!req.auth || !req.auth.user) return NextResponse.json({ error: "UNAUTHORIZED", message: "Not logged in" }, { status: 401 });
   const { user } = req.auth;
