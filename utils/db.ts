@@ -1,12 +1,16 @@
 import { MongoClient, ServerApiVersion, ObjectId } from "mongodb";
- 
-const uri = process.env.MONGODB_URI || "";
+
+const uri = process.env.MONGODB_URI;
 const options = {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
     deprecationErrors: true,
   },
+}
+
+if (!uri) {
+  throw new Error("No MONGODB_URI environment variable.");
 }
  
 let client: MongoClient;
