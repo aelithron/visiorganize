@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       pathname: "/u/**",
     }]
   },
+  output: "standalone",
 };
 
 export default nextConfig;

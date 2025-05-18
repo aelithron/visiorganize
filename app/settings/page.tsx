@@ -27,7 +27,7 @@ export default async function Page() {
   );
 }
 
-export async function SignInOrOut() {
+async function SignInOrOut() {
   const session = await auth();
   if (!session?.user) {
     return (

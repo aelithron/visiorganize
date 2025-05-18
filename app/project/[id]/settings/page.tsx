@@ -5,9 +5,9 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { ProjectSettings } from "./settings.module";
-import { NotFoundProject } from "../page";
+import { NotFoundProject } from "@/app/(ui)/notfound.module";;
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   const id = (await params).id;
   const project = await getProject(id);

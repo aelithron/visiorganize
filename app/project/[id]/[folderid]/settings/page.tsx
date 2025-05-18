@@ -5,9 +5,9 @@ import { faArrowLeft, faFolder } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { FolderSettings } from "./settings.module";
-import { NotFoundFolder } from "../page";
+import { NotFoundFolder } from "@/app/(ui)/notfound.module";
 
-export default async function Page({ params }: { params: { id: string, folderid: string } }) {
+export default async function Page({ params }: { params: Promise<{ id: string, folderid: string }> }) {
   const session = await auth();
   const id = (await params).id;
   const folderid = (await params).folderid;

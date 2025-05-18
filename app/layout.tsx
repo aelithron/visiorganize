@@ -6,6 +6,7 @@ import { config } from '@fortawesome/fontawesome-svg-core'
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import Header from "./(ui)/header";
 import CatEasterEgg from "./(ui)/cateasteregg.module";
+import { Suspense } from "react";
 config.autoAddCss = false
 
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body className={`${montserrat.className} antialiased`}>
         <Header />
         {children}
-        <CatEasterEgg />
+        <Suspense>
+          <CatEasterEgg />
+        </Suspense>
       </body>
     </html>
   );
