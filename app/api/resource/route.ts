@@ -29,7 +29,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
     const folder = folders.find((folder) => folder._id.toString() === folderID?.toString())
     if (folder === undefined) return NextResponse.json({ error: "NO_FOLDER", message: "Folder not found" }, { status: 404 });
     const resources = folder.resources;
-    resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date() });
+    resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date(), comments: [] });
     for (const oldFolder of folders) {
       if (oldFolder._id.toString() === folderID?.toString()) {
         oldFolder.resources = resources;
@@ -49,7 +49,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
   }
 
   const resources = fullProject.resources;
-  resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date() });
+  resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date(), comments: [] });
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {

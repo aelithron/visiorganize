@@ -3,7 +3,9 @@ import GitHub from "next-auth/providers/github"
 import Slack from "next-auth/providers/slack";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  
+  theme: {
+    logo: "https://raw.githubusercontent.com/aelithron/visiorganize/refs/heads/main/public/logo.webp",
+  },
   providers: providers(),
   callbacks: {
     authorized: async ({ auth }) => {

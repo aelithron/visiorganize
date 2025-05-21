@@ -39,6 +39,7 @@ export type Project = {
 export type Folder = {
   _id: ObjectId;
   name: string;
+  color: `#${string}`;
   resources: Resource[];
 }
 export type Resource = {
@@ -47,6 +48,14 @@ export type Resource = {
   editedAt: Date;
   type: string;
   body: unknown;
+  comments: Comment[];
+}
+
+export type Comment = {
+  _id: ObjectId;
+  user: string;
+  text: string;
+  leftAt: Date;
 }
 
 export async function getProject(projectID: string): Promise<Project | null> {
