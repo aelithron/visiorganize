@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
-
-import { config } from '@fortawesome/fontawesome-svg-core'
-import '@fortawesome/fontawesome-svg-core/styles.css'
 import Header from "./(ui)/header";
 import CatEasterEgg from "./(ui)/cateasteregg.module";
 import { Suspense } from "react";
+
+import { config } from '@fortawesome/fontawesome-svg-core'
+import '@fortawesome/fontawesome-svg-core/styles.css'
 config.autoAddCss = false
 
 const montserrat = Montserrat({ subsets: ["latin"] });

@@ -31,6 +31,7 @@ export default client;
 export type Project = {
   _id: ObjectId;
   user: string;
+  sharedWith: string[];
   name: string;
   editedAt: Date;
   folders: Folder[];

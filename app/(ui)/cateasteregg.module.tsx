@@ -12,7 +12,7 @@ export default function CatEasterEgg() {
   const [showCat, setShowCat] = useState(searchParams.has("cat") && searchParams.get("cat") !== "false");
   const [isBlinking, setIsBlinking] = useState(false);
   const [shownMessage, setShownMessage] = useState("");
-  useHotkeys('ctrl+alt+tab', () => setShowCat(!showCat), [showCat])
+  useHotkeys('shift+backspace+t', () => setShowCat(!showCat), [showCat])
 
   useEffect(() => {
     const interval = setInterval(() => {
