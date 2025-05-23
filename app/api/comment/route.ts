@@ -22,6 +22,12 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
   if (fullProject === null) return NextResponse.json({ error: "NO_PROJECT", message: "Project not found" }, { status: 404 });
 
   // actual comment logic not implemented yet
+  console.log("Comment created", {
+    projectID,
+    resourceID,
+    commentID,
+    body: body.body,
+  });
 
   return NextResponse.json({
     message: "Comment created successfully",
