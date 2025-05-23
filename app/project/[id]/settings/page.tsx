@@ -20,7 +20,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       <div className="flex flex-col items-center justify-center p-6 md:px-16 md:py-8">
         <h1 className="text-3xl font-semibold">{project.name}</h1>
         <FormattedDate date={project.editedAt} />
-        <ProjectSettings projectID={id} projectName={project.name} />
+        <ProjectSettings projectID={id} projectName={project.name} projectSharedWith={project.sharedWith} />
       </div>
     </div>
   )

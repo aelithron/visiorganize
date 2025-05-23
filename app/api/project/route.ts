@@ -22,6 +22,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
     editedAt: new Date(),
     folders: [],
     resources: [],
+    sharedWith: []
   });
   return NextResponse.json({ message: "Project created successfully", id: projectID }, { status: 201 });
 });
@@ -55,12 +56,15 @@ export const PATCH = auth(async function PATCH(req: NextAuthRequest) {
   const projectID = new ObjectId(body.projectID as string);
 
   if (body.name !== undefined && body.name !== null && body.name.trim().length > 0) fullProject.name = body.name.trim();
+  if (body.sharedWith !== undefined && body.sharedWith !== null && Array.isArray(body.sharedWith)) fullProject.sharedWith = body.sharedWith;
+  if (fullProject.sharedWith.find((email) => email === user.email)) return NextResponse.json({ error: "INVALID_SHARE", message: "You cannot share a project with yourself" }, { status: 400 });
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {
       $set: {
         editedAt: new Date(),
         name: fullProject.name,
+        sharedWith: fullProject.sharedWith,
       },
     },
   );
