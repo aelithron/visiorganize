@@ -21,7 +21,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
 
   const folders: Folder[] = fullProject.folders;
   const folderID = new ObjectId()
-  folders.push({ _id: folderID, name: body.name, resources: [] });
+  folders.push({ _id: folderID, name: body.name, resources: [], color: "#default" });
 
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
