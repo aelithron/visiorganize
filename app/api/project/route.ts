@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { NextAuthRequest } from "next-auth";
 import { ObjectId } from "mongodb";
-import client, { getProject } from "@/utils/db";
+import client, { checkPermissions, getProject } from "@/utils/db";
 
 export const dynamic = 'force-dynamic';
 
@@ -37,8 +37,8 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
   const projectID = new ObjectId(body.projectID as string);
 
   const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
-  if (project === null) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project was not found." }, { status: 404 });
-  if (project.user !== user.email) return NextResponse.json({ error: "FORBIDDEN", message: "You do not have permission to delete this project!" }, { status: 403 });
+  if (project === null || !(await checkPermissions(projectID.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project was not found." }, { status: 404 });
+  if (await checkPermissions(projectID.toString(), user.email) !== "owner") return NextResponse.json({ error: "FORBIDDEN", message: "You do not have permission to delete this project!" }, { status: 403 });
 
   await client.db(process.env.MONGODB_DB).collection("projects").deleteOne({ _id: projectID });
   return NextResponse.json({ message: "Project deleted successfully." }, { status: 200 });
@@ -52,12 +52,17 @@ export const PATCH = auth(async function PATCH(req: NextAuthRequest) {
   const body = await req.json();
   if (body.projectID === undefined || body.projectID === null || body.projectID.trim().length <= 0) return NextResponse.json({ error: "INVALID_PROJECTID", message: "Project ID is missing/invalid" }, { status: 400 });
   const fullProject = await getProject(body.projectID);
-  if (fullProject === null) return NextResponse.json({ error: "NO_PROJECT", message: "Project not found" }, { status: 404 });
+  if (fullProject === null || !(await checkPermissions(fullProject._id.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project was not found." }, { status: 404 });
   const projectID = new ObjectId(body.projectID as string);
 
   if (body.name !== undefined && body.name !== null && body.name.trim().length > 0) fullProject.name = body.name.trim();
-  if (body.sharedWith !== undefined && body.sharedWith !== null && Array.isArray(body.sharedWith)) fullProject.sharedWith = body.sharedWith;
-  if (fullProject.sharedWith.find((email) => email === user.email)) return NextResponse.json({ error: "INVALID_SHARE", message: "You cannot share a project with yourself" }, { status: 400 });
+  if (body.sharedWith !== undefined && body.sharedWith !== null && Array.isArray(body.sharedWith)) {
+    if (JSON.stringify(!body.sharedWith) !== JSON.stringify(fullProject.sharedWith)) {
+      if (await checkPermissions(projectID.toString(), user.email) !== "owner") return NextResponse.json({ error: "FORBIDDEN", message: "You do not have permission to share this project" }, { status: 403 });
+      fullProject.sharedWith = body.sharedWith;
+      if (fullProject.sharedWith.find((email) => email === user.email)) return NextResponse.json({ error: "INVALID_SHARE", message: "You cannot share a project with yourself" }, { status: 400 });
+    }
+  }
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {

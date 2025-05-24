@@ -68,3 +68,14 @@ export async function getProject(projectID: string): Promise<Project | null> {
   }
   return await client.db(process.env.MONGODB_DB).collection<Project>("projects").findOne({ _id });
 }
+
+export type PermissionLevel = "owner" | "shared" | undefined;
+export async function checkPermissions(projectID: string, user: string): Promise<PermissionLevel> {
+  let hasPermission: PermissionLevel = undefined;
+  const project = await getProject(projectID);
+  if (project === null) return undefined;
+
+  if (project.user === user) hasPermission = "owner";
+  if (project.sharedWith.find((email) => email === user)) hasPermission = "shared";
+  return hasPermission;
+}

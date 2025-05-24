@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { NextAuthRequest } from "next-auth";
-import client, { Folder, getProject, Resource } from "@/utils/db";
+import client, { checkPermissions, Folder, getProject, Resource } from "@/utils/db";
 import { ObjectId } from "mongodb";
 
 export const dynamic = 'force-dynamic';
@@ -18,7 +18,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
   if (body.body === undefined || body.body === null || body.body.trim().length <= 0) return NextResponse.json({ error: "INVALID_BODY", message: "Resource body is missing/invalid" }, { status: 400 });
 
   const fullProject = await getProject(body.projectID);
-  if (fullProject === null) return NextResponse.json({ error: "NO_PROJECT", message: "Project not found" }, { status: 404 });
+  if (fullProject === null || !(await checkPermissions(fullProject._id.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found" }, { status: 404 });
   const folders: Folder[] = fullProject.folders;
   const projectID = new ObjectId(body.projectID as string);
   const resourceID = new ObjectId()
@@ -74,12 +74,11 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
   const resourceID = new ObjectId(body.resourceID as string);
 
   const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
-  if (project === null) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project was not found." }, { status: 404 });
+  if (project === null || !(await checkPermissions(projectID.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found." }, { status: 404 });
 
   if (body.folderID !== undefined && body.folderID !== null && body.folderID.trim().length > 0) {
     const folders: Folder[] = project.folders;
     const folderID = new ObjectId(body.folderID as string);
-    if (project.user !== user.email) return NextResponse.json({ error: "FORBIDDEN", message: "You do not have permission to delete this project!" }, { status: 403 });
     if (folders.find((folder) => folder._id.toString() === folderID.toString()) === undefined) return NextResponse.json({ error: "FOLDER_NOT_FOUND", message: "Folder not found" }, { status: 404 });
     const folder = folders.find((folder) => folder._id.toString() === folderID?.toString());
     if (folder === undefined) return NextResponse.json({ error: "FOLDER_NOT_FOUND", message: "Folder not found" }, { status: 404 });

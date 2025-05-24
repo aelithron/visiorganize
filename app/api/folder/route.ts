@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { NextAuthRequest } from "next-auth";
-import client, { Folder, getProject } from "@/utils/db";
+import client, { checkPermissions, Folder, getProject } from "@/utils/db";
 import { ObjectId } from "mongodb";
 
 export const dynamic = 'force-dynamic';
@@ -16,7 +16,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
   if (body.name === undefined || body.name === null || body.name.trim().length <= 0) return NextResponse.json({ error: "INVALID_NAME", message: "Folder name is missing/invalid" }, { status: 400 });
 
   const fullProject = await getProject(body.projectID);
-  if (fullProject === null) return NextResponse.json({ error: "NO_PROJECT", message: "Project not found" }, { status: 404 });
+  if (fullProject === null || !(await checkPermissions(fullProject._id.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found" }, { status: 404 });
   const projectID = new ObjectId(body.projectID as string);
 
   const folders: Folder[] = fullProject.folders;
@@ -47,10 +47,9 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
   const folderID = new ObjectId(body.folderID as string);
 
   const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
-  if (project === null) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project was not found." }, { status: 404 });
+  if (project === null || !(await checkPermissions(projectID.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project was not found." }, { status: 404 });
   const folders: Folder[] = project.folders;
-  if (project.user !== user.email) return NextResponse.json({ error: "FORBIDDEN", message: "You do not have permission to delete this project!" }, { status: 403 });
-  if (folders.find((folder) => folder._id.toString() === folderID.toString()) === undefined) return NextResponse.json({ error: "FOLDER_NOT_FOUND", message: "Folder was not found." }, { status: 404 });
+  if (folders.find((folder) => folder._id.toString() === folderID.toString()) === undefined) return NextResponse.json({ error: "FOLDER_NOT_FOUND", message: "Folder was not found" }, { status: 404 });
   
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
@@ -72,7 +71,7 @@ export const PATCH = auth(async function PATCH(req: NextAuthRequest) {
   const body = await req.json();
   if (body.projectID === undefined || body.projectID === null || body.projectID.trim().length <= 0) return NextResponse.json({ error: "INVALID_PROJECT_ID", message: "Project ID is missing/invalid" }, { status: 400 });
   const fullProject = await getProject(body.projectID);
-  if (fullProject === null) return NextResponse.json({ error: "NO_PROJECT", message: "Project not found" }, { status: 404 });
+  if (fullProject === null || !(await checkPermissions(fullProject._id.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found" }, { status: 404 });
   if (body.folderID === undefined || body.folderID === null || body.folderID.trim().length <= 0) return NextResponse.json({ error: "INVALID_FOLDER_ID", message: "Folder ID is missing/invalid" }, { status: 400 });
   let folders: Folder[] = fullProject.folders;
   const folder = folders.find((folder) => folder._id.toString() === body.folderID.toString());

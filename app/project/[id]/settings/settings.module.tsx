@@ -63,7 +63,7 @@ function EditSettingsForm({ projectID, projectName, projectSharedWith }: { proje
       })
       .then((res) => {
         if (!res.error) {
-          router.push(`/`);
+          router.push(`/project/${projectID}`);
         } else {
           alert("Failed to update project");
         }
