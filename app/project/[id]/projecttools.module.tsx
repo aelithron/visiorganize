@@ -44,7 +44,7 @@ export function CreateResource({ projectID, folderID }: { projectID: string, fol
       <textarea placeholder="Contents" value={body} onChange={(e) => setBody(e.target.value)} className="p-1 bg-slate-300 dark:bg-slate-700 border-2 border-slate-400 dark:border-slate-900 rounded-lg" />
       <div className="grid grid-cols-4 gap-2">
         <button onClick={() => onClick(projectID, name, body, folderID)} className="hover:text-sky-500 bg-slate-300 dark:bg-slate-700 p-2 text-center rounded-xl border-2 border-slate-400 dark:border-slate-900 col-span-3"><FontAwesomeIcon icon={faFileCirclePlus} /> Create Resource</button>
-        <Link href={`/project/${projectID}${folderID ? `/${folderID}` : ""}/new`} className="hover:text-sky-500 bg-slate-300 dark:bg-slate-700 p-2 text-center rounded-xl border-2 border-slate-400 dark:border-slate-900"><FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} /></Link>
+        <Link href={`/project/${projectID}${folderID ? `/${folderID}` : ""}/new${name !== "" ? `?name=${name}` : ""}${body !== "" ? `${name === "" ? "?" : "&"}body=${body}` : ""}`} className="hover:text-sky-500 bg-slate-300 dark:bg-slate-700 p-2 text-center rounded-xl border-2 border-slate-400 dark:border-slate-900"><FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} /></Link>
       </div>
     </div>
   )
