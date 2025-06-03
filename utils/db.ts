@@ -1,4 +1,5 @@
 import { MongoClient, ServerApiVersion, ObjectId } from "mongodb";
+import { CardType } from "./cardtypes";
 
 const uri = process.env.MONGODB_URI;
 const options = {
@@ -47,8 +48,8 @@ export type Resource = {
   _id: ObjectId;
   name: string;
   editedAt: Date;
-  type: string;
-  body: unknown;
+  type: CardType;
+  body: string;
   comments: Comment[];
 }
 
