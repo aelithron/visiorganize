@@ -36,7 +36,7 @@ export default function FullCreateResource({ projectID, folderID }: { projectID:
           {}
         </select>
       </div>
-      {}o
+      {}
       <button type="submit" className="bg-slate-300 dark:bg-slate-700 p-2 rounded-xl col-span-2"><FontAwesomeIcon icon={faPlus} /> Create Resource</button>
     </form>
   )
