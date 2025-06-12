@@ -1,5 +1,5 @@
 import { MongoClient, ServerApiVersion, ObjectId } from "mongodb";
-import { CardType } from "./cardtypes";
+import { CardType } from "./cards";
 
 const uri = process.env.MONGODB_URI;
 const options = {
