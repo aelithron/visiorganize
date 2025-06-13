@@ -5,7 +5,12 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { ProjectSettings } from "./settings.module";
-import { NotFoundProject } from "@/app/(ui)/notfound.module";;
+import { NotFoundProject } from "@/app/(ui)/notfound.module";import { Metadata } from "next";
+;
+
+export const metadata: Metadata = {
+  title: "Project Settings",
+};
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();

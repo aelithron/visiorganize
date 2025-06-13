@@ -3,6 +3,11 @@ import { getProject } from "@/utils/db"
 import FormattedDate from "@/utils/time.module";
 import { NotFoundProject } from "@/app/(ui)/notfound.module";
 import { ResourceTools } from "@/app/project/[id]/view/[resourceid]/resourcetools.module";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "View Resource",
+};
 
 export default async function Page({ params }: { params: Promise<{ id: string, resourceid: string }> }) {
   const session = await auth();

@@ -14,7 +14,7 @@ const montserrat = Montserrat({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: {
     default: "Visiorganize",
-    template: "%s | Visiorganize",
+    template: "%s • Visiorganize",
   },
   description: "An app for organizing software development projects.",
 };

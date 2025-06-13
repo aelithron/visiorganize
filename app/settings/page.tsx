@@ -1,7 +1,12 @@
 import { auth, signIn, signOut } from "@/auth"
 import { faSignIn, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Metadata } from "next";
 import Image from "next/image";
+
+export const metadata: Metadata = {
+  title: "Settings",
+};
 
 export default async function Page() {
   const session = await auth();

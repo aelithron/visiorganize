@@ -1,4 +1,9 @@
+import { Metadata } from "next";
 import ProjectList from "./projectlist.module";
+
+export const metadata: Metadata = {
+  title: 'Projects • Visiorganize',
+}
 
 export default function Home() {
   return (

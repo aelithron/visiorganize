@@ -4,6 +4,11 @@ import { FolderDisplay, ResourceDisplay } from "@/utils/displays.module";
 import FormattedDate from "@/utils/time.module";
 import { ProjectTools } from "./projecttools.module";
 import { NotFoundProject } from "@/app/(ui)/notfound.module";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: `View Project`,
+};
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();

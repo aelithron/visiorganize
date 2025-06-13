@@ -6,6 +6,11 @@ import FullCreateResource from "./createresource.module";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "New Resource",
+};
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();

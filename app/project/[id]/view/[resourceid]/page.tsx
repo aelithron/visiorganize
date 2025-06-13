@@ -5,6 +5,11 @@ import { NotFoundFolder, NotFoundProject } from "@/app/(ui)/notfound.module";
 import { ResourceTools } from "./resourcetools.module";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder } from "@fortawesome/free-solid-svg-icons";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "View Resource",
+};
 
 export default async function Page({ params }: { params: Promise<{ id: string, folderid: string, resourceid: string }> }) {
   const session = await auth();

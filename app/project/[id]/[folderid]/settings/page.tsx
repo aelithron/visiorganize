@@ -6,6 +6,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { FolderSettings } from "./settings.module";
 import { NotFoundFolder } from "@/app/(ui)/notfound.module";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Folder Settings",
+};
 
 export default async function Page({ params }: { params: Promise<{ id: string, folderid: string }> }) {
   const session = await auth();

@@ -6,6 +6,11 @@ import { faFolder } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FolderTools } from "./foldertools.module";
 import { NotFoundFolder } from "@/app/(ui)/notfound.module";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "View Folder",
+};
 
 export default async function Page({ params }: { params: Promise<{ id: string, folderid: string }> }) {
   const session = await auth();

@@ -1,4 +1,9 @@
+import { Metadata } from "next";
 import NewProject from "./newproj.form";
+
+export const metadata: Metadata = {
+  title: "Create Project",
+};
 
 export default async function Page() {
   return (
