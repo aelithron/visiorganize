@@ -1,5 +1,5 @@
 "use client"
-import { faFolderPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,7 @@ export function ResourceTools({ projectID, resourceID, folderID }: { projectID: 
   return (
     <div className="m-8 md:w-1/3">
       <div className="flex gap-4 bg-slate-200 dark:bg-slate-800 p-4 rounded-lg justify-between sticky">
-        <button onClick={() => setOpenMenu(openMenu !== "deleteresource" ? "deleteresource" : null)} className="hover:text-sky-500"><FontAwesomeIcon icon={faFolderPlus} /></button>
+        <button onClick={() => setOpenMenu(openMenu !== "deleteresource" ? "deleteresource" : null)} className="hover:text-sky-500"><FontAwesomeIcon icon={faTrashCan} /></button>
       </div>
       {openMenu === "deleteresource" && <DeleteResource projectID={projectID} resourceID={resourceID} closeMenu={() => setOpenMenu(null)} folderID={folderID} />}
     </div>
