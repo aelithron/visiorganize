@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { NextAuthRequest } from "next-auth";
-import client, { checkPermissions, Folder, getProject, Resource } from "@/utils/db";
+import client, { checkPermissions, getProject, Resource } from "@/utils/db";
 import { ObjectId } from "mongodb";
 
 export const dynamic = 'force-dynamic';
@@ -19,34 +19,8 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
 
   const fullProject = await getProject(body.projectID);
   if (fullProject === null || !(await checkPermissions(fullProject._id.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found" }, { status: 404 });
-  const folders: Folder[] = fullProject.folders;
   const projectID = new ObjectId(body.projectID as string);
-  const resourceID = new ObjectId()
-
-  let folderID: ObjectId | null = null;
-  if (body.folderID !== undefined && body.folderID !== null && body.folderID.trim().length > 0) {
-    folderID = new ObjectId(body.folderID as string);
-    const folder = folders.find((folder) => folder._id.toString() === folderID?.toString())
-    if (folder === undefined) return NextResponse.json({ error: "NO_FOLDER", message: "Folder not found" }, { status: 404 });
-    const resources = folder.resources;
-    resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date(), comments: [] });
-    for (const oldFolder of folders) {
-      if (oldFolder._id.toString() === folderID?.toString()) {
-        oldFolder.resources = resources;
-        break;
-      }
-    }
-    await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
-      { _id: projectID },
-      {
-        $set: {
-          editedAt: new Date(),
-          folders: folders,
-        },
-      },
-    );
-    return NextResponse.json({ message: "Resource (in folder) created successfully", id: resourceID }, { status: 201 });
-  }
+  const resourceID = new ObjectId();
 
   const resources = fullProject.resources;
   resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date(), comments: [] });
@@ -59,7 +33,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
       },
     },
   );
-  return NextResponse.json({ message: "Resource (in project) created successfully", id: resourceID }, { status: 201 });
+  return NextResponse.json({ message: "Resource created successfully", id: resourceID }, { status: 201 });
 });
 
 export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
@@ -76,26 +50,6 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
   const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
   if (project === null || !(await checkPermissions(projectID.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found." }, { status: 404 });
 
-  if (body.folderID !== undefined && body.folderID !== null && body.folderID.trim().length > 0) {
-    const folders: Folder[] = project.folders;
-    const folderID = new ObjectId(body.folderID as string);
-    if (folders.find((folder) => folder._id.toString() === folderID.toString()) === undefined) return NextResponse.json({ error: "FOLDER_NOT_FOUND", message: "Folder not found" }, { status: 404 });
-    const folder = folders.find((folder) => folder._id.toString() === folderID?.toString());
-    if (folder === undefined) return NextResponse.json({ error: "FOLDER_NOT_FOUND", message: "Folder not found" }, { status: 404 });
-    if (folder.resources.find((resource) => resource._id.toString() === resourceID.toString()) === undefined) return NextResponse.json({ error: "RESOURCE_NOT_FOUND", message: "Resource was not found." }, { status: 404 });
-    folder.resources = folder.resources.filter((resource) => resource._id.toString() !== resourceID.toString());
-    await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
-      { _id: projectID },
-      {
-        $set: {
-          editedAt: new Date(),
-          folders: folders
-        },
-      },
-    );
-    return NextResponse.json({ message: "Resource (in folder) deleted successfully." }, { status: 200 });
-  }
-
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {
@@ -105,5 +59,5 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
       },
     },
   );
-  return NextResponse.json({ message: "Resource (in project) deleted successfully." }, { status: 200 });
+  return NextResponse.json({ message: "Resource deleted successfully." }, { status: 200 });
 });
