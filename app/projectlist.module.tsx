@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { Session, User } from "next-auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import FormattedDate from "@/utils/time.module";
+import FormattedDate from "@/app/(ui)/time.module";
 import client, { Project } from "@/utils/db";
 import SharedMessage from "./(ui)/shared.module";
 

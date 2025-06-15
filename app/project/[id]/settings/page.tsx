@@ -1,6 +1,6 @@
 import { auth } from "@/auth";
 import { getProject } from "@/utils/db"
-import FormattedDate from "@/utils/time.module";
+import FormattedDate from "@/app/(ui)/time.module";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";

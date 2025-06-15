@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { getProject } from "@/utils/db"
-import { FolderDisplay, ResourceDisplay } from "@/utils/displays.module";
-import FormattedDate from "@/utils/time.module";
+import { ResourceDisplay } from "@/app/(ui)/displays.module";
+import FormattedDate from "@/app/(ui)/time.module";
 import { ProjectTools } from "./projecttools.module";
 import { NotFoundProject } from "@/app/(ui)/notfound.module";
 import { Metadata } from "next";
@@ -22,10 +22,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       <div className="flex flex-col items-center justify-center p-6 md:px-16">
         <h1 className="text-3xl font-semibold">{project.name}</h1>
         <FormattedDate date={project.editedAt} />
-        {((project.folders.length === 0) && (project.resources.length === 0)) && <p className="text-slate-500 font-semibold text-lg">Project is empty!</p>}
-        <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(project.folders.length)}`}>
-          {project.folders.map((folder, index) => <FolderDisplay key={index} folder={folder} projectid={id} />)}
-        </div>
+        {project.resources.length === 0 && <p className="text-slate-500 font-semibold text-lg">Project is empty!</p>}
         <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(project.resources.length)}`}>
           {project.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} projectID={id} />)}
         </div>
