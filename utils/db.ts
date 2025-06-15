@@ -36,6 +36,7 @@ export type Project = {
   name: string;
   editedAt: Date;
   resources: Resource[];
+  tags: Tag[];
 };
 export type Resource = {
   _id: ObjectId;
@@ -44,6 +45,10 @@ export type Resource = {
   type: CardType;
   body: string;
   comments: Comment[];
+}
+export type Tag = {
+  text: string;
+  color: string;
 }
 export type Comment = {
   _id: ObjectId;

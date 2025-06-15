@@ -24,6 +24,7 @@ export default async function Page({ params }: { params: Promise<{ id: string, r
       <div className="flex flex-col items-center justify-center p-6 md:px-16">
         <h1 className="text-3xl font-semibold">{resource.name}</h1>
         <h1 className="text-xl text-slate-800 dark:text-slate-200">in {project.name}</h1>
+        <p className="mt-4">{resource.body}</p> {/* This is a temporary method, parse better later :3 */}
       </div>
     </div>
   )

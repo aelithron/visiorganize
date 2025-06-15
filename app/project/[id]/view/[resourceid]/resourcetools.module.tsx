@@ -1,8 +1,9 @@
 "use client"
-import { faTrash, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faTrash, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export function ResourceTools({ projectID, resourceID }: { projectID: string, resourceID: string }) {
   type PossibleMenus = "deleteresource" | null;
@@ -10,6 +11,7 @@ export function ResourceTools({ projectID, resourceID }: { projectID: string, re
   return (
     <div className="m-8 md:w-1/3">
       <div className="flex gap-4 bg-slate-200 dark:bg-slate-800 p-4 rounded-lg justify-between sticky">
+        <Link href={`/project/${projectID}`} className="hover:text-sky-500"><FontAwesomeIcon icon={faArrowLeft} /></Link>
         <button onClick={() => setOpenMenu(openMenu !== "deleteresource" ? "deleteresource" : null)} className="hover:text-sky-500"><FontAwesomeIcon icon={faTrashCan} /></button>
       </div>
       {openMenu === "deleteresource" && <DeleteResource projectID={projectID} resourceID={resourceID} closeMenu={() => setOpenMenu(null)} />}
