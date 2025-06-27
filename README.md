@@ -1,5 +1,5 @@
 <img src="public/logo.webp" height=125>
-
+![nhbadge](https://img.shields.io/badge/made%20for%20neighborhood-bf8f73?style=for-the-badge&logo=hackclub&logoColor=ffffff)
 # Visiorganize
 ### *(vision + organize)*
 The ultimate organization tool for software developers! Also, this is Aelithron's project for Hack Club's [Neighborhood](https://neighborhood.hackclub.com).
