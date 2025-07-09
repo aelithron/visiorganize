@@ -1,13 +1,16 @@
 <img src="public/logo.webp" height=125>
 
-![nhbadge](https://img.shields.io/badge/made%20for%20neighborhood-bf8f73?style=for-the-badge&logo=hackclub&logoColor=ffffff)
-
 # Visiorganize
 ### *(vision + organize)*
-The ultimate organization tool for software developers! Also, this is Aelithron's project for Hack Club's [Neighborhood](https://neighborhood.hackclub.com).
+The ultimate organization tool for software developers!
 
-I need to hit 100 hours on this, track my progress here ->
-![hackatime badge](https://hackatime-badge.hackclub.com/U08RJ1PEM7X/visiorganize)
+<div align="center">
+  <a href="https://shipwrecked.hackclub.com/?t=ghrm" target="_blank">
+    <img src="https://hc-cdn.hel1.your-objectstorage.com/s/v3/739361f1d440b17fc9e2f74e49fc185d86cbec14_badge.png" 
+         alt="This project is part of Shipwrecked, the world's first hackathon on an island!" 
+         style="width: 35%;">
+  </a>
+</div>
 
 # Concepts
 Some useful concepts before you begin installing and using Visiorganize are described here.
