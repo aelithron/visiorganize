@@ -6,6 +6,7 @@ import { useState } from "react"
 export default function EditResourceForm({ projectID, resourceID, resourceName, resourceBody }: { projectID: string, resourceID: string, resourceName: string, resourceBody: string }) {
   const [name, setName] = useState<string>(resourceName);
   const [body, setBody] = useState<string>(resourceBody);
+  
   return (
     <form className="flex flex-col gap-2 items-center justify-center p-6 md:px-10 space-y-4" onSubmit={handleSubmit}>
       {/* This only works for text-based resources, parse better later :3 */ }

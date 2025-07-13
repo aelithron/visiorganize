@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { getProject } from "@/utils/db"
 import { NotFoundProject, NotFoundResource } from "@/app/(ui)/notfound.module";
 import { Metadata } from "next";
-import EditResourceForm from "./edit.form";
+import EditResourceForm from "./editresource.form";
 
 export const metadata: Metadata = {
   title: "Edit Resource",
