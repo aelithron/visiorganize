@@ -1,5 +1,6 @@
 import { Resource } from "@/utils/db"
-import { DeleteResource } from "./tempresourcedelete.module"
+import { faUpRightFromSquare } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import Link from "next/link"
 
 export function ResourceDisplay({ resource, projectID }: { resource: Resource, projectID: string }) {
@@ -10,9 +11,9 @@ export function ResourceDisplay({ resource, projectID }: { resource: Resource, p
           <Link href={`/project/${projectID}/view/${resource._id.toString()}`} className="hover:text-sky-500">{resource.name}</Link> 
           <p className="text-slate-500">({resource.type.name})</p>
         </div>
-        <p className="text-sm text-slate-800 dark:text-slate-300">{resource.body}</p> {/* This is a temporary method, parse better later :3 */}
+        <p className="text-sm text-slate-800 dark:text-slate-300">{resource.body}</p> {/* This only works for text-based resources, parse better later :3 */}
       </div>
-      <DeleteResource projectID={projectID} resourceID={resource._id.toString()} />
+      <Link href={`/project/${projectID}/view/${resource._id.toString()}`} className="hover:text-sky-500"><FontAwesomeIcon icon={faUpRightFromSquare} /></Link> 
     </div>
   )
 }

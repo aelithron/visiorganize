@@ -1,11 +1,11 @@
 import { auth } from "@/auth";
 import { getProject } from "@/utils/db"
 import { NotFoundProject, NotFoundResource } from "@/app/(ui)/notfound.module";
-import { ResourceTools } from "@/app/project/[id]/view/[resourceid]/resourcetools.module";
 import { Metadata } from "next";
+import EditResourceForm from "./edit.form";
 
 export const metadata: Metadata = {
-  title: "View Resource",
+  title: "Edit Resource",
 };
 
 export default async function Page({ params }: { params: Promise<{ id: string, resourceid: string }> }) {
@@ -17,15 +17,12 @@ export default async function Page({ params }: { params: Promise<{ id: string, r
   if (project === null || (project.user !== session.user.email && !project.sharedWith.includes(session.user.email as string))) return <NotFoundProject id={id} />
   const resource = project.resources.find((res) => res._id.toString() === resourceID);
   if (resource === undefined) return <p className="flex flex-col items-center justify-center p-6 md:px-16 space-y-2"><NotFoundResource id={id} resourceID={resourceID} /></p>
-  
+
   return (
-    <div>
-      <ResourceTools projectID={id} resourceID={resourceID} />
-      <div className="flex flex-col items-center justify-center p-6 md:px-16">
-        <h1 className="text-3xl font-semibold">{resource.name}</h1>
-        <h1 className="text-xl text-slate-800 dark:text-slate-200">in {project.name}</h1>
-        <p className="mt-4">{resource.body}</p> {/* This only works for text-based resources, parse better later :3 */}
-      </div>
+    <div className="flex flex-col items-center justify-center p-6 md:px-16">
+      <h1 className="text-3xl font-semibold">{resource.name}</h1>
+      <h1 className="text-xl text-slate-800 dark:text-slate-200">in {project.name}</h1>
+      <EditResourceForm projectID={id} resourceID={resourceID} resourceName={project.name} resourceBody={resource.body} />
     </div>
   )
 }
