@@ -23,7 +23,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
   const resourceID = new ObjectId();
 
   const resources = fullProject.resources;
-  resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date(), comments: [] });
+  resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date(), comments: [], tags: [] });
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {

@@ -17,7 +17,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   if (session === null || session.user === null || session.user === undefined) return <p className="flex flex-col items-center justify-center p-6 md:px-16 space-y-2">Unauthorized, try logging in!</p>
   if (project === null || (project.user !== session.user.email && !project.sharedWith.includes(session.user.email as string))) return <NotFoundProject id={id} />
   const tagMap = new Map<string, string>();
-  console.log(project);
   for (const tag of project.tags) tagMap.set(tag.text, tag.color);
   return (
     <div>

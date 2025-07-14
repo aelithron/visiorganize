@@ -9,7 +9,7 @@ export function ResourceDisplay({ resource, projectID }: { resource: Resource, p
       <div className="flex flex-col justify-center">
         <div className="flex gap-1">
           <Link href={`/project/${projectID}/view/${resource._id.toString()}`} className="hover:text-sky-500">{resource.name}</Link> 
-          <p className="text-slate-500">({resource.type.name})</p>
+          {/*<p className="text-slate-500">({resource.type.name})</p>*/} {/* Uncomment when multiple resource types exist */}
         </div>
         <p className="text-sm text-slate-800 dark:text-slate-300">{resource.body}</p> {/* This only works for text-based resources, parse better later :3 */}
       </div>

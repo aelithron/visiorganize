@@ -45,6 +45,7 @@ export type Resource = {
   type: CardType;
   body: string;
   comments: Comment[];
+  tags: Tag[];
 }
 export type Tag = {
   text: string;
