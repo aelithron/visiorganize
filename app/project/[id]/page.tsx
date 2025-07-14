@@ -26,7 +26,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         <FormattedDate date={project.editedAt} />
         {project.resources.length === 0 && <p className="text-slate-500 font-semibold text-lg">Project is empty!</p>}
         <div className={`mt-2 gap-3 grid grid-cols-1 ${formatCols(project.resources.length)}`}>
-          {project.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} projectID={id} />)}
+          {project.resources.map((resource, index) => <ResourceDisplay key={index} resource={resource} tags={project.tags} projectID={id} />)}
         </div>
       </div>
     </div>

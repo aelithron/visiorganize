@@ -21,7 +21,7 @@ export default function FullCreateResource({ projectID }: { projectID: string })
     })
     .then((res) => {
       if (res.ok) {
-        router.push(`/project/${projectID}/resources`);
+        router.push(`/project/${projectID}`);
       } else {
         alert("Failed to create resource.");
       }

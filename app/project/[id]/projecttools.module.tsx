@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { getTagTextColor } from "@/app/(ui)/displays.module";
 
 export function ProjectTools({ projectID, tags }: { projectID: string, tags: Map<string, string> }) {
   type PossibleMenus = "createresource" | "managetags" | null;
@@ -104,12 +105,4 @@ export function ManageTags({ projectID, tags }: { projectID: string, tags: Map<s
       </form>
     </div>
   )
-}
-function getTagTextColor(hexColor: string): "#000000" | "#ffffff" {
-  const hex = hexColor.replace('#', '');
-  const r = parseInt(hex.substring(0, 2), 16);
-  const g = parseInt(hex.substring(2, 4), 16);
-  const b = parseInt(hex.substring(4, 6), 16);
-  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
-  return yiq >= 128 ? "#000000" : "#ffffff";
 }
