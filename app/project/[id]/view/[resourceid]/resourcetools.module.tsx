@@ -32,7 +32,7 @@ function DeleteResource({ projectID, resourceID, closeMenu }: { projectID: strin
       })
       .then((res) => {
         if (!res.error) {
-          router.push(`/`);
+          router.push(`/project/${projectID}`);
         } else {
           alert("Failed to delete resource");
         }

@@ -39,9 +39,3 @@ export default function FullCreateResource({ projectID }: { projectID: string })
     </form>
   )
 }
-
-/*
-  <form className="grid gap-4 items-center justify-center p-6 md:px-16 space-y-4 grid-cols-1 md:grid-cols-2" onSubmit={handleSubmit}>
-    <button type="submit" className="bg-slate-300 dark:bg-slate-700 p-2 rounded-xl col-span-2"><FontAwesomeIcon icon={faSave} /> Submit</button>
-  </form>
-*/
