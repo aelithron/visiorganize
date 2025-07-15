@@ -35,15 +35,9 @@ export type Project = {
   sharedWith: string[];
   name: string;
   editedAt: Date;
-  folders: Folder[];
   resources: Resource[];
+  tags: Tag[];
 };
-export type Folder = {
-  _id: ObjectId;
-  name: string;
-  color: `#${string}`;
-  resources: Resource[];
-}
 export type Resource = {
   _id: ObjectId;
   name: string;
@@ -51,8 +45,12 @@ export type Resource = {
   type: CardType;
   body: string;
   comments: Comment[];
+  tags: string[];
 }
-
+export type Tag = {
+  text: string;
+  color: string;
+}
 export type Comment = {
   _id: ObjectId;
   user: string;

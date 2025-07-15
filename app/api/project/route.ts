@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { NextAuthRequest } from "next-auth";
 import { ObjectId } from "mongodb";
-import client, { checkPermissions, getProject } from "@/utils/db";
+import client, { checkPermissions, getProject, Project } from "@/utils/db";
 
 export const dynamic = 'force-dynamic';
 
@@ -20,10 +20,10 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
     user: user.email, // idk if I will keep email IDs, but currently I will
     name: body.name.trim(),
     editedAt: new Date(),
-    folders: [],
     resources: [],
-    sharedWith: []
-  });
+    sharedWith: [],
+    tags: [],
+  } as Project);
   return NextResponse.json({ message: "Project created successfully", id: projectID }, { status: 201 });
 });
 

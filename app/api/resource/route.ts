@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { NextAuthRequest } from "next-auth";
-import client, { checkPermissions, Folder, getProject, Resource } from "@/utils/db";
+import client, { checkPermissions, getProject, Project, Resource } from "@/utils/db";
 import { ObjectId } from "mongodb";
 
 export const dynamic = 'force-dynamic';
@@ -19,37 +19,11 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
 
   const fullProject = await getProject(body.projectID);
   if (fullProject === null || !(await checkPermissions(fullProject._id.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found" }, { status: 404 });
-  const folders: Folder[] = fullProject.folders;
   const projectID = new ObjectId(body.projectID as string);
-  const resourceID = new ObjectId()
-
-  let folderID: ObjectId | null = null;
-  if (body.folderID !== undefined && body.folderID !== null && body.folderID.trim().length > 0) {
-    folderID = new ObjectId(body.folderID as string);
-    const folder = folders.find((folder) => folder._id.toString() === folderID?.toString())
-    if (folder === undefined) return NextResponse.json({ error: "NO_FOLDER", message: "Folder not found" }, { status: 404 });
-    const resources = folder.resources;
-    resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date(), comments: [] });
-    for (const oldFolder of folders) {
-      if (oldFolder._id.toString() === folderID?.toString()) {
-        oldFolder.resources = resources;
-        break;
-      }
-    }
-    await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
-      { _id: projectID },
-      {
-        $set: {
-          editedAt: new Date(),
-          folders: folders,
-        },
-      },
-    );
-    return NextResponse.json({ message: "Resource (in folder) created successfully", id: resourceID }, { status: 201 });
-  }
+  const resourceID = new ObjectId();
 
   const resources = fullProject.resources;
-  resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date(), comments: [] });
+  resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date(), comments: [], tags: [] });
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {
@@ -59,7 +33,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
       },
     },
   );
-  return NextResponse.json({ message: "Resource (in project) created successfully", id: resourceID }, { status: 201 });
+  return NextResponse.json({ message: "Resource created successfully", id: resourceID }, { status: 201 });
 });
 
 export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
@@ -76,26 +50,6 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
   const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
   if (project === null || !(await checkPermissions(projectID.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found." }, { status: 404 });
 
-  if (body.folderID !== undefined && body.folderID !== null && body.folderID.trim().length > 0) {
-    const folders: Folder[] = project.folders;
-    const folderID = new ObjectId(body.folderID as string);
-    if (folders.find((folder) => folder._id.toString() === folderID.toString()) === undefined) return NextResponse.json({ error: "FOLDER_NOT_FOUND", message: "Folder not found" }, { status: 404 });
-    const folder = folders.find((folder) => folder._id.toString() === folderID?.toString());
-    if (folder === undefined) return NextResponse.json({ error: "FOLDER_NOT_FOUND", message: "Folder not found" }, { status: 404 });
-    if (folder.resources.find((resource) => resource._id.toString() === resourceID.toString()) === undefined) return NextResponse.json({ error: "RESOURCE_NOT_FOUND", message: "Resource was not found." }, { status: 404 });
-    folder.resources = folder.resources.filter((resource) => resource._id.toString() !== resourceID.toString());
-    await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
-      { _id: projectID },
-      {
-        $set: {
-          editedAt: new Date(),
-          folders: folders
-        },
-      },
-    );
-    return NextResponse.json({ message: "Resource (in folder) deleted successfully." }, { status: 200 });
-  }
-
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {
@@ -105,5 +59,41 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
       },
     },
   );
-  return NextResponse.json({ message: "Resource (in project) deleted successfully." }, { status: 200 });
+  return NextResponse.json({ message: "Resource deleted successfully." }, { status: 200 });
+});
+
+export const PATCH = auth(async function PATCH(req: NextAuthRequest) {
+  if (!req.auth || !req.auth.user) return NextResponse.json({ error: "UNAUTHORIZED", message: "Not logged in." }, { status: 401 });
+  const { user } = req.auth;
+  if (user.email === null || user.email === undefined) return NextResponse.json({ error: "INVALID_USER_PROFILE", message: "User has no email address." }, { status: 400 });
+
+  const body = await req.json();
+  if (body.projectID === undefined || body.projectID === null || body.projectID.trim().length <= 0) return NextResponse.json({ error: "INVALID_PROJECT_ID", message: "Project ID is missing/invalid." }, { status: 400 });
+  if (body.resourceID === undefined || body.resourceID === null || body.resourceID.trim().length <= 0) return NextResponse.json({ error: "INVALID_RESOURCE_ID", message: "Resource ID is missing/invalid." }, { status: 400 });
+  const projectID = new ObjectId(body.projectID as string);
+  const resourceID = new ObjectId(body.resourceID as string);
+
+  const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
+  if (project === null || !(await checkPermissions(projectID.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found." }, { status: 404 });
+
+  let resources = (project as Project).resources;
+  const resource = resources.find((res) => res._id.toString() === resourceID.toString());
+  if (resource === null || resource === undefined) return NextResponse.json({ error: "RESOURCE_NOT_FOUND", message: "Resource not found." }, { status: 404 });
+  resources = resources.filter((res) => res._id !== resource._id);
+
+  if (body.name !== undefined && body.name !== null && body.name.trim().length > 0) resource.name = body.name.trim();
+  if (body.body !== undefined && body.body !== null && body.body.trim().length > 0) resource.body = body.body.trim();
+  if (body.tags !== undefined && body.tags !== null && Array.isArray(body.tags)) resource.tags = body.tags;
+
+  resources.push(resource);
+  await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
+    { _id: projectID },
+    {
+      $set: {
+        editedAt: new Date(),
+        resources: resources,
+      },
+    },
+  );
+  return NextResponse.json({ message: "Resource edited successfully." }, { status: 200 });
 });

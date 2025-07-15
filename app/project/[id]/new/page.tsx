@@ -1,8 +1,8 @@
 import { auth } from "@/auth";
 import { getProject } from "@/utils/db"
-import FormattedDate from "@/utils/time.module";
+import FormattedDate from "@/app/(ui)/time.module";
 import { NotFoundProject } from "@/app/(ui)/notfound.module";
-import FullCreateResource from "./createresource.module";
+import FullCreateResource from "./createresource.form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
