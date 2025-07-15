@@ -63,7 +63,7 @@ export function ManageTags({ projectID, tags }: { projectID: string, tags: Map<s
     })
       .then((res) => {
         if (res.ok) {
-          tags.set(tag, color);
+          tags.set(tag.toLowerCase(), color);
           router.refresh();
           setTag("");
           setColor("#000000");

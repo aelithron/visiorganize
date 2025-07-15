@@ -36,6 +36,7 @@ export default function FullCreateResource({ projectID }: { projectID: string })
       </select>*/}
       <textarea placeholder="Contents" value={resourceBody} onChange={(e) => setResourceBody(e.target.value)} className="p-1 bg-slate-300 dark:bg-slate-700 border-2 border-slate-400 dark:border-slate-900 rounded-lg" />
       <button type="submit" className="bg-slate-300 dark:bg-slate-700 p-2 rounded-xl col-span-2"><FontAwesomeIcon icon={faPlus} /> Create Resource</button>
+      <p>You can add tags inside of the created resource!</p>
     </form>
   )
 }
