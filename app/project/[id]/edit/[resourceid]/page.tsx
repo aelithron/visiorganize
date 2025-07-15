@@ -20,12 +20,14 @@ export default async function Page({ params }: { params: Promise<{ id: string, r
 
   const resourceTags: Map<string, string> = new Map();
   for (const tag of resource.tags) resourceTags.set(tag, project.tags.find(e => e.text === tag)!.color);
+  const projectTags: Map<string, string> = new Map();
+  for (const tag of project.tags) projectTags.set(tag.text, tag.color);
 
   return (
     <div className="flex flex-col items-center justify-center p-6 md:px-16">
       <h1 className="text-3xl font-semibold">{resource.name}</h1>
       <h1 className="text-xl text-slate-800 dark:text-slate-200">in {project.name}</h1>
-      <EditResourceForm projectID={id} resourceID={resourceID} resourceName={resource.name} resourceBody={resource.body} resourceTags={resourceTags} />
+      <EditResourceForm projectID={id} resourceID={resourceID} resourceName={resource.name} resourceBody={resource.body} resourceTags={resourceTags} projectTags={projectTags} />
     </div>
   )
 }
