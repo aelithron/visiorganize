@@ -23,7 +23,7 @@ export default function EditResourceForm({ projectID, resourceID, resourceName, 
     for (const tag of tags) tagsForAPI.push(tag.text);
     fetch(`/api/resource`, {
       method: "PATCH",
-      body: JSON.stringify({ projectID, name, body, tags: tagsForAPI }),
+      body: JSON.stringify({ projectID, resourceID, name, body, tags: tagsForAPI }),
     })
       .then((res) => {
         if (res.ok) {
@@ -47,7 +47,7 @@ export default function EditResourceForm({ projectID, resourceID, resourceName, 
     <form className="flex flex-col gap-2 items-center justify-center p-6 md:px-10 space-y-4" onSubmit={handleSubmit}>
       <input type="text" placeholder="Resource Name" value={name} onChange={(e) => setName(e.target.value)} className="p-1 bg-slate-300 dark:bg-slate-700 border-2 border-slate-400 dark:border-slate-900 rounded-lg" />
       <textarea placeholder="Contents" value={body} onChange={(e) => setBody(e.target.value)} className="p-1 bg-slate-300 dark:bg-slate-700 border-2 border-slate-400 dark:border-slate-900 rounded-lg" /> {/* This only works for text-based resources, parse better later :3 */}
-      <div className="flex flex-col bg-slate-300 dark:bg-slate-700 p-2 rounded-xl">
+      <div className="flex flex-col bg-slate-300 dark:bg-slate-700 border-2 border-slate-400 dark:border-slate-900 p-2 rounded-lg">
         <div className="flex flex-col gap-2 items-start">
           {tags.map(tag =>
             <div key={tag.text} className="flex gap-1">
@@ -56,7 +56,7 @@ export default function EditResourceForm({ projectID, resourceID, resourceName, 
             </div>
           )}
         </div>
-        <select onChange={(e) => updateTagList(e.target.value)} value={selectedTag}>
+        <select onChange={(e) => updateTagList(e.target.value)} className="border-t-2 border-slate-500 mt-2 pt-2" value={selectedTag}>
           <option value={""}>-- Choose a Tag --</option>
           {projectTagList
             .filter((projectTag: Tag) => !tags.some(tag => tag.text === projectTag.text))

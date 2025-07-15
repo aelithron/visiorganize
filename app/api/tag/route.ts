@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { NextAuthRequest } from "next-auth";
-import client, { checkPermissions, getProject, Project, Tag } from "@/utils/db";
+import client, { checkPermissions, getProject, Resource, Tag } from "@/utils/db";
 import { ObjectId } from "mongodb";
 
 export const dynamic = 'force-dynamic';
@@ -48,8 +48,8 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
   const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
   if (project === null || !(await checkPermissions(projectID.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found." }, { status: 404 });
 
-  const resources: Project["resources"] = project.resources;
-  for (const resource of resources) resource.tags = resource.tags.filter(e => !e.text === body.text);
+  const resources: Resource[] = project.resources;
+  for (const resource of resources) resource.tags = resource.tags.filter(e => e !== body.text);
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {
