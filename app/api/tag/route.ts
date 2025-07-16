@@ -21,7 +21,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
   const projectID = new ObjectId(body.projectID as string);
 
   const tags = fullProject.tags;
-  if (tags.values().find(e => e.text === body.text)) return NextResponse.json({ error: "ALREADY_EXISTS", message: "The tag already exists!" });
+  if (tags.values() && tags.values().find(e => e.text === body.text)) return NextResponse.json({ error: "ALREADY_EXISTS", message: "The tag already exists!" });
   tags.push({ text: (body.text as string).toLowerCase(), color: body.color });
   await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
