@@ -4,6 +4,7 @@ import { NotFoundProject, NotFoundResource } from "@/app/(ui)/notfound.module";
 import { ResourceTools } from "@/app/project/[id]/view/[resourceid]/resourcetools.module";
 import { Metadata } from "next";
 import { getTagTextColor } from "@/app/(ui)/displays.module";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "View Resource",
@@ -26,7 +27,7 @@ export default async function Page({ params }: { params: Promise<{ id: string, r
         <h1 className="text-3xl font-semibold">{resource.name}</h1>
         <h1 className="text-xl text-slate-800 dark:text-slate-200">in {project.name}</h1>
         <div className="flex gap-2 items-end mt-2">
-          {resource.tags.map(tag => <p key={tag} className={"p-1 border-slate-500 border-2 text-sm rounded-lg max-w-min"} style={{ backgroundColor: project.tags.find(e => e.text == tag)!.color, color: getTagTextColor(project.tags.find(e => e.text == tag)!.color) }}>{tag}</p>)}
+          {resource.tags.map(tag => <Link key={tag} className={"p-1 border-slate-500 border-2 text-sm rounded-lg max-w-min"} style={{ backgroundColor: project.tags.find(e => e.text == tag)!.color, color: getTagTextColor(project.tags.find(e => e.text == tag)!.color) }} href={`/project/${project._id.toString()}/tag/${tag}`}>{tag}</Link>)}
         </div>
         <p className="mt-4">{resource.body}</p> {/* This only works for text-based resources, parse better later :3 */}
       </div>

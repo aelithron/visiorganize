@@ -52,7 +52,6 @@ export type Tag = {
   color: string;
 }
 export type Comment = {
-  _id: ObjectId;
   user: string;
   text: string;
   leftAt: Date;

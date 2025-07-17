@@ -36,3 +36,7 @@ Visiorganize self-hosted won't act the same way as the visi.axionspire.net insta
 
 ## Screenshot
 ![IMG](https://hc-cdn.hel1.your-objectstorage.com/s/v3/ee511e230468fc2d94722848a945d69453473a00_visiorganize_showcase.png)
+
+## Extras
+Want a little fun? `shift+backspace+t` on any app page! (if you're on mobile, add `?cat` at the end of any page's url)
+a little extra? click what appears :3c
