@@ -68,7 +68,7 @@ export function ManageTags({ projectID, tags }: { projectID: string, tags: Map<s
           setTag("");
           setColor("#000000");
         } else {
-          alert("Failed to create tag.");
+          alert(`Failed to create tag.`);
         }
       });
   }
@@ -90,7 +90,7 @@ export function ManageTags({ projectID, tags }: { projectID: string, tags: Map<s
     <div className="flex flex-col gap-4 bg-slate-200 dark:bg-slate-800 p-4 rounded-lg my-2">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-1">
         {Array.from(tags.entries()).map(([text, color]) => <div key={text} className="flex justify-center gap-2">
-          <p className={"p-2 border-slate-500 border-2 rounded-lg max-w-min"} style={{ backgroundColor: color, color: getTagTextColor(color) }}>{text}</p>
+          <Link className={"p-2 border-slate-500 border-2 rounded-lg max-w-min"} style={{ backgroundColor: color, color: getTagTextColor(color) }} href={`/project/${projectID}/tag/${text}`}>{text}</Link>
           <button onClick={() => handleTagDelete(text)}><FontAwesomeIcon icon={faTrash} /></button>
         </div>)}
         {tags.size < 1 && <p className="col-span-2 md:col-span-3 text-center p-1">You have no tags!</p>}

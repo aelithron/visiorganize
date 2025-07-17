@@ -14,7 +14,7 @@ export function ResourceDisplay({ resource, tags, projectID }: { resource: Resou
           {/*<p className="text-slate-500">({resource.type.name})</p>*/} {/* Uncomment when multiple resource types exist */}
         </div>
         <div className="flex gap-2 items-end">
-          {resource.tags.map(tag => <p key={tag} className={"p-1 border-slate-500 border-2 text-sm rounded-lg max-w-min"} style={{ backgroundColor: tags.find(e => e.text == tag)!.color, color: getTagTextColor(tags.find(e => e.text == tag)!.color) }}>{tag}</p>)}
+          {resource.tags.map(tag => <Link key={tag} className={"p-1 border-slate-500 border-2 text-sm rounded-lg max-w-min"} style={{ backgroundColor: tags.find(e => e.text == tag)!.color, color: getTagTextColor(tags.find(e => e.text == tag)!.color) }} href={`/project/${projectID}/tag/${tag}`}>{tag}</Link>)}
           {isShortenedTags ? "..." : ""}
         </div>
         <p className="text-sm text-slate-800 dark:text-slate-300">{cardTruncate(resource.body)}</p> {/* This only works for text-based resources, parse better later :3 */}

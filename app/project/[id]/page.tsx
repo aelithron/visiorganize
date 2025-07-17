@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
-  const id = (await params).id
+  const id = (await params).id;
   const project = await getProject(id);
   if (session === null || session.user === null || session.user === undefined) return <p className="flex flex-col items-center justify-center p-6 md:px-16 space-y-2">Unauthorized, try logging in!</p>
   if (project === null || (project.user !== session.user.email && !project.sharedWith.includes(session.user.email as string))) return <NotFoundProject id={id} />
@@ -33,7 +33,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   )
 }
 
-function formatCols(itemCount: number): string {
+export function formatCols(itemCount: number): string {
   switch (itemCount) {
     case (0):
       return "md:grid-cols-1"
