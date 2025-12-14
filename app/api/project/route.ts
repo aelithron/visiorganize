@@ -2,7 +2,7 @@ import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { NextAuthRequest } from "next-auth";
 import { ObjectId } from "mongodb";
-import client, { checkPermissions, getProject, Project } from "@/utils/db";
+import getClient, { checkPermissions, getProject, Project } from "@/utils/db";
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +15,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
   const body = await req.json();
   if (body.name === undefined || body.name === null || body.name.trim().length <= 0) return NextResponse.json({ error: "INVALID_NAME", message: "Project name is missing/invalid" }, { status: 400 });
 
-  await client.db(process.env.MONGODB_DB).collection("projects").insertOne({
+  await getClient().db(process.env.MONGODB_DB).collection("projects").insertOne({
     _id: projectID,
     user: user.email, // idk if I will keep email IDs, but currently I will
     name: body.name.trim(),
@@ -36,11 +36,11 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
   if (body.projectID === undefined || body.projectID === null || body.projectID.trim().length <= 0) return NextResponse.json({ error: "INVALID_ID", message: "Project ID is missing/invalid." }, { status: 400 });
   const projectID = new ObjectId(body.projectID as string);
 
-  const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
+  const project = await getClient().db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
   if (project === null || !(await checkPermissions(projectID.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project was not found." }, { status: 404 });
   if (await checkPermissions(projectID.toString(), user.email) !== "owner") return NextResponse.json({ error: "FORBIDDEN", message: "You do not have permission to delete this project!" }, { status: 403 });
 
-  await client.db(process.env.MONGODB_DB).collection("projects").deleteOne({ _id: projectID });
+  await getClient().db(process.env.MONGODB_DB).collection("projects").deleteOne({ _id: projectID });
   return NextResponse.json({ message: "Project deleted successfully." }, { status: 200 });
 });
 
@@ -63,7 +63,7 @@ export const PATCH = auth(async function PATCH(req: NextAuthRequest) {
       if (fullProject.sharedWith.find((email) => email === user.email)) return NextResponse.json({ error: "INVALID_SHARE", message: "You cannot share a project with yourself" }, { status: 400 });
     }
   }
-  await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
+  await getClient().db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {
       $set: {

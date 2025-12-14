@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: visiorganize-app
-        image: ghcr.io/aelithron/visiorganize:v1.0.0
+        image: ghcr.io/aelithron/visiorganize:latest
         resources:
           requests:
             memory: "512Mi"

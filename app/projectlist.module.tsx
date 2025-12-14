@@ -5,7 +5,7 @@ import { Session, User } from "next-auth";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import FormattedDate from "@/app/(ui)/time.module";
-import client, { Project } from "@/utils/db";
+import getClient, { Project } from "@/utils/db";
 import SharedMessage from "./(ui)/shared.module";
 
 export default async function ProjectList() {
@@ -13,8 +13,8 @@ export default async function ProjectList() {
   if (!session || !session.user) return <div className="text-center mt-3">Unauthorized, make sure to log in!</div>
   const user: User = session.user;
   if (user.email === null || user.email === undefined) return <div className="text-center mt-3">User ID not found.</div>
-  const projects = await client.db(process.env.MONGODB_DB).collection<Project>("projects").find({ user: user.email }).toArray(); // once again, may not keep email ids
-  const sharedProjects = await client.db(process.env.MONGODB_DB).collection<Project>("projects").find({ sharedWith: user.email }).toArray(); // once again, may not keep email ids
+  const projects = await getClient().db(process.env.MONGODB_DB).collection<Project>("projects").find({ user: user.email }).toArray(); // once again, may not keep email ids
+  const sharedProjects = await getClient().db(process.env.MONGODB_DB).collection<Project>("projects").find({ sharedWith: user.email }).toArray(); // once again, may not keep email ids
   projects.push(...sharedProjects);
 
   if (projects.length === 0) {

@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { NextAuthRequest } from "next-auth";
-import client, { checkPermissions, getProject, Project, Resource } from "@/utils/db";
+import getClient, { checkPermissions, getProject, Project, Resource } from "@/utils/db";
 import { ObjectId } from "mongodb";
 
 export const dynamic = 'force-dynamic';
@@ -24,7 +24,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
 
   const resources = fullProject.resources;
   resources.push({ _id: resourceID, name: body.name, type: body.type, body: body.body, editedAt: new Date(), comments: [], tags: [] });
-  await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
+  await getClient().db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {
       $set: {
@@ -47,10 +47,10 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
   const projectID = new ObjectId(body.projectID as string);
   const resourceID = new ObjectId(body.resourceID as string);
 
-  const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
+  const project = await getClient().db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
   if (project === null || !(await checkPermissions(projectID.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found." }, { status: 404 });
 
-  await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
+  await getClient().db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {
       $set: {
@@ -73,7 +73,7 @@ export const PATCH = auth(async function PATCH(req: NextAuthRequest) {
   const projectID = new ObjectId(body.projectID as string);
   const resourceID = new ObjectId(body.resourceID as string);
 
-  const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
+  const project = await getClient().db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
   if (project === null || !(await checkPermissions(projectID.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found." }, { status: 404 });
 
   let resources = (project as Project).resources;
@@ -86,7 +86,7 @@ export const PATCH = auth(async function PATCH(req: NextAuthRequest) {
   if (body.tags !== undefined && body.tags !== null && Array.isArray(body.tags)) resource.tags = body.tags;
 
   resources.push(resource);
-  await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
+  await getClient().db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {
       $set: {

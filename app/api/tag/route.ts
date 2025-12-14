@@ -1,7 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 import { NextAuthRequest } from "next-auth";
-import client, { checkPermissions, getProject, Resource, Tag } from "@/utils/db";
+import getClient, { checkPermissions, getProject, Resource, Tag } from "@/utils/db";
 import { ObjectId } from "mongodb";
 
 export const dynamic = 'force-dynamic';
@@ -23,7 +23,7 @@ export const POST = auth(async function POST(req: NextAuthRequest) {
   const tags = fullProject.tags;
   if (tags.find(e => e.text === body.text)) return NextResponse.json({ error: "ALREADY_EXISTS", message: "The tag already exists!" }, { status: 400 });
   tags.push({ text: (body.text as string).toLowerCase(), color: body.color });
-  await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
+  await getClient().db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {
       $set: {
@@ -45,12 +45,12 @@ export const DELETE = auth(async function DELETE(req: NextAuthRequest) {
   if (!body.text || body.text.trim().length <= 0) return NextResponse.json({ error: "INVALID_TEXT", message: "Tag text is missing/invalid." }, { status: 400 });
   const projectID = new ObjectId(body.projectID as string);
 
-  const project = await client.db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
+  const project = await getClient().db(process.env.MONGODB_DB).collection("projects").findOne({ _id: projectID });
   if (project === null || !(await checkPermissions(projectID.toString(), user.email))) return NextResponse.json({ error: "PROJECT_NOT_FOUND", message: "Project not found." }, { status: 404 });
 
   const resources: Resource[] = project.resources;
   for (const resource of resources) resource.tags = resource.tags.filter(e => e !== body.text);
-  await client.db(process.env.MONGODB_DB).collection("projects").updateOne(
+  await getClient().db(process.env.MONGODB_DB).collection("projects").updateOne(
     { _id: projectID },
     {
       $set: {
